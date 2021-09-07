@@ -7,6 +7,7 @@ import { ChildProcess, spawn, SpawnOptions } from 'child_process';
 import { chmodSync, existsSync, readFileSync, statSync, truncateSync, unlinkSync } from 'fs';
 import { homedir, tmpdir } from 'os';
 import type { ProfilingSession, Target } from 'v8-inspect-profiler';
+import { Event } from 'vs/base/common/event';
 import { isAbsolute, join, resolve } from 'vs/base/common/path';
 import { IProcessEnvironment, isMacintosh, isWindows } from 'vs/base/common/platform';
 import { randomPort } from 'vs/base/common/ports';
@@ -344,13 +345,12 @@ export async function main(argv: string[]): Promise<any> {
 				// redirect the file output to the console
 				function createLoggerPromise(logger: CliVerboseLogger, filename: string, stream: NodeJS.WriteStream): (child: ChildProcess) => Promise<void> {
 					return async (child: ChildProcess) => {
-						const childClosePromise = new Promise<void>(resolve => {
-							child.on('close', () => {
-								resolve();
-							});
+						await Promise.race([
+							logger.streamFile(filename, stream),
+							Event.toPromise(Event.fromNodeEventEmitter(child, 'close'))
+						]).finally(() => {
+							unlinkSync(filename);
 						});
-						await Promise.race([logger.streamFile(filename, stream), childClosePromise]);
-						unlinkSync(filename);
 					};
 				}
 
@@ -365,8 +365,7 @@ export async function main(argv: string[]): Promise<any> {
 				}
 			}
 			const argsArr: string[] = [];
-			const execPathToUse = process.execPath;
-			argsArr.push('-a', execPathToUse);
+			argsArr.push('-a', process.execPath);
 			argsArr.push(...openArgs, '--args', ...argv.slice(2));
 			if (env['VSCODE_DEV']) {
 				// If we're in development mode, replace the . arg with the
