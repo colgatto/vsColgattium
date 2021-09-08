@@ -141,7 +141,7 @@ export async function main(argv: string[]): Promise<any> {
 				child.stdout!.on('data', (data: Buffer) => console.log(data.toString('utf8').trim()));
 				child.stderr!.on('data', (data: Buffer) => console.log(data.toString('utf8').trim()));
 
-				await new Promise<void>(resolve => child.once('exit', () => resolve()));
+				await Event.toPromise(Event.fromNodeEventEmitter(child, 'exit'));
 			});
 		}
 
