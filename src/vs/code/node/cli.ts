@@ -205,6 +205,23 @@ export async function main(argv: string[]): Promise<any> {
 			if (waitMarkerFilePath) {
 				addArg(argv, '--waitMarkerFilePath', waitMarkerFilePath);
 			}
+
+			// When running with --wait, we want to continue running CLI process
+			// until either:
+			// - the wait marker file has been deleted (e.g. when closing the editor)
+			// - the launched process terminates (e.g. due to a crash)
+			processCallbacks.push(async child => {
+				try {
+					await Promise.race([
+						whenDeleted(waitMarkerFilePath!),
+						Event.toPromise(Event.fromNodeEventEmitter(child, 'exit'))
+					]);
+				} finally {
+					if (stdinFilePath) {
+						unlinkSync(stdinFilePath); // Make sure to delete the tmp stdin file if we have any
+					}
+				}
+			});
 		}
 
 		// If we have been started with `--prof-startup` we need to find free ports to profile
@@ -382,24 +399,6 @@ export async function main(argv: string[]): Promise<any> {
 			}
 
 			child = spawn('open', spawnArgs, options);
-		}
-
-		if (args.wait && waitMarkerFilePath) {
-			const waitPromise = (child: ChildProcess) => new Promise<void>(resolve => {
-
-				// Complete when process exits
-				child.once('exit', () => resolve(undefined));
-
-				// Or, complete when wait marker file is deleted
-				whenDeleted(waitMarkerFilePath!).finally(resolve);
-			}).then(() => {
-
-				// Make sure to delete the tmp stdin file if we have any
-				if (stdinFilePath) {
-					unlinkSync(stdinFilePath);
-				}
-			});
-			processCallbacks.push(waitPromise);
 		}
 
 		return Promise.all(processCallbacks.map(callback => callback(child)));
