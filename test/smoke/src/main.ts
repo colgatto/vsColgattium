@@ -248,7 +248,7 @@ async function ensureStableCode(): Promise<void> {
 			throw new Error(`Could not find suitable stable version ${majorMinorVersion}`);
 		}
 
-		console.log(`*** Found VS Code v${version}, downloading previous VS Code version ${previousVersion.version}...`);
+		console.log(`*** Found VS Colgattium v${version}, downloading previous VS Colgattium version ${previousVersion.version}...`);
 
 		const stableCodeExecutable = await vscodetest.download({
 			cachePath: path.join(os.tmpdir(), 'vscode-test'),

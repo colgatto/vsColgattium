@@ -368,7 +368,7 @@ suite('SnippetsService', function () {
 		assert.strictEqual(result.suggestions.length, 1);
 	});
 
-	test('issue #61296: VS code freezes when editing CSS file with emoji', async function () {
+	test('issue #61296: VS Colgattium freezes when editing CSS file with emoji', async function () {
 		disposableStore.add(LanguageConfigurationRegistry.register(modeService.getLanguageIdentifier('fooLang')!, {
 			wordPattern: /(#?-?\d*\.\d\w*%?)|(::?[\w-]*(?=[^,{;]*[,{]))|(([@#.!])?[\w-?]+%?|[@#!.])/g
 		}));

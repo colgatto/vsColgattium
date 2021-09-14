@@ -2138,9 +2138,9 @@ export interface MainThreadTestingShape {
 	$updateControllerLabel(controllerId: string, label: string): void;
 	/** Diposes of the test controller with the given ID */
 	$unregisterTestController(controllerId: string): void;
-	/** Requests tests published to VS Code. */
+	/** Requests tests published to VS Colgattium. */
 	$subscribeToDiffs(): void;
-	/** Stops requesting tests published to VS Code. */
+	/** Stops requesting tests published to VS Colgattium. */
 	$unsubscribeFromDiffs(): void;
 	/** Publishes that new tests were available on the given source. */
 	$publishDiff(controllerId: string, diff: TestsDiff): void;

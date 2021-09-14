@@ -9,7 +9,7 @@
  * distribution and CANNOT be used in published extensions.
  *
  * To test these API in local environment:
- * - Use Insiders release of 'VS Code'.
+ * - Use Insiders release of 'VS Colgattium'.
  * - Add `"enableProposedApi": true` to your package.json.
  * - Copy this file to your project.
  */

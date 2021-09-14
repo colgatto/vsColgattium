@@ -192,7 +192,7 @@ export class SingleUseTestCollection extends Disposable {
 
 	private upsertItem(actual: TestItemRaw, parent: OwnedCollectionTestItem | undefined) {
 		if (!(actual instanceof TestItemImpl)) {
-			throw new Error(`TestItems provided to the VS Code API must extend \`vscode.TestItem\`, but ${actual.id} did not`);
+			throw new Error(`TestItems provided to the VS Colgattium API must extend \`vscode.TestItem\`, but ${actual.id} did not`);
 		}
 
 		const fullId = TestId.fromExtHostTestItem(actual, this.root.id, parent?.actual);

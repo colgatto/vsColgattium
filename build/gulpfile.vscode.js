@@ -364,7 +364,7 @@ BUILD_TARGETS.forEach(buildTarget => {
 
 	const [vscode, vscodeMin] = ['', 'min'].map(minified => {
 		const sourceFolderName = `out-vscode${dashed(minified)}`;
-		const destinationFolderName = `VSCode${dashed(platform)}${dashed(arch)}`;
+		const destinationFolderName = `VSColgattium${dashed(platform)}${dashed(arch)}`;
 
 		const vscodeTaskCI = task.define(`vscode${dashed(platform)}${dashed(arch)}${dashed(minified)}-ci`, task.series(
 			util.rimraf(path.join(buildRoot, destinationFolderName)),
@@ -488,7 +488,7 @@ const generateVSCodeConfigurationTask = task.define('generate-vscode-configurati
 		const userDataDir = path.join(os.tmpdir(), 'tmpuserdata');
 		const extensionsDir = path.join(os.tmpdir(), 'tmpextdir');
 		const arch = process.env['VSCODE_ARCH'];
-		const appRoot = path.join(buildDir, `VSCode-darwin-${arch}`);
+		const appRoot = path.join(buildDir, `VSColgattium-darwin-${arch}`);
 		const appName = process.env.VSCODE_QUALITY === 'insider' ? 'Visual\\ Studio\\ Code\\ -\\ Insiders.app' : 'Visual\\ Studio\\ Code.app';
 		const appPath = path.join(appRoot, appName, 'Contents', 'Resources', 'app', 'bin', 'code');
 		const codeProc = cp.exec(

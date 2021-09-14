@@ -53,7 +53,7 @@ export interface IJSONSchema {
 	then?: IJSONSchema;
 	else?: IJSONSchema;
 
-	// VS Code extensions
+	// VS Colgattium extensions
 	defaultSnippets?: IJSONSchemaSnippet[];
 	errorMessage?: string;
 	patternErrorMessage?: string;

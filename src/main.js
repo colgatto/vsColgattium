@@ -272,19 +272,19 @@ function createDefaultArgvConfigSync(argvConfigPath) {
 
 		// Default argv content
 		const defaultArgvConfigContent = [
-			'// This configuration file allows you to pass permanent command line arguments to VS Code.',
+			'// This configuration file allows you to pass permanent command line arguments to VS Colgattium.',
 			'// Only a subset of arguments is currently supported to reduce the likelihood of breaking',
 			'// the installation.',
 			'//',
 			'// PLEASE DO NOT CHANGE WITHOUT UNDERSTANDING THE IMPACT',
 			'//',
-			'// NOTE: Changing this file requires a restart of VS Code.',
+			'// NOTE: Changing this file requires a restart of VS Colgattium.',
 			'{',
 			'	// Use software rendering instead of hardware accelerated rendering.',
-			'	// This can help in cases where you see rendering issues in VS Code.',
+			'	// This can help in cases where you see rendering issues in VS Colgattium.',
 			'	// "disable-hardware-acceleration": true,',
 			'',
-			'	// Enabled by default by VS Code to resolve color issues in the renderer',
+			'	// Enabled by default by VS Colgattium to resolve color issues in the renderer',
 			'	// See https://github.com/microsoft/vscode/issues/51791 for details',
 			'	"disable-color-correct-rendering": true',
 			'}'

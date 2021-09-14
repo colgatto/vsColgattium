@@ -594,7 +594,7 @@ export class SwitchProductQualityContribution extends Disposable implements IWor
 							nls.localize('cancel', "Cancel"),
 						],
 						{
-							detail: nls.localize('selectSyncService.detail', "The Insiders version of VS Code will synchronize your settings, keybindings, extensions, snippets and UI State using separate insiders settings sync service by default."),
+							detail: nls.localize('selectSyncService.detail', "The Insiders version of VS Colgattium will synchronize your settings, keybindings, extensions, snippets and UI State using separate insiders settings sync service by default."),
 							cancelId: 2
 						}
 					);

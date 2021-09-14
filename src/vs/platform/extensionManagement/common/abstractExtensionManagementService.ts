@@ -391,7 +391,7 @@ export abstract class AbstractExtensionManagementService extends Disposable impl
 		}
 
 		if (!compatibleExtension) {
-			throw new ExtensionManagementError(nls.localize('notFoundCompatibleDependency', "Can't install '{0}' extension because it is not compatible with the current version of VS Code (version {1}).", extension.identifier.id, product.version), INSTALL_ERROR_INCOMPATIBLE);
+			throw new ExtensionManagementError(nls.localize('notFoundCompatibleDependency', "Can't install '{0}' extension because it is not compatible with the current version of VS Colgattium (version {1}).", extension.identifier.id, product.version), INSTALL_ERROR_INCOMPATIBLE);
 		}
 
 		return compatibleExtension;

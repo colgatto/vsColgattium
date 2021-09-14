@@ -22,14 +22,14 @@ suite('markdown.SmartSelect', () => {
 	test('Smart select multi-line paragraph', async () => {
 		const ranges = await getSelectionRangesForDocument(
 			joinLines(
-				`Many of the core components and extensions to ${CURSOR}VS Code live in their own repositories on GitHub. `,
+				`Many of the core components and extensions to ${CURSOR}VS Colgattium live in their own repositories on GitHub. `,
 				`For example, the[node debug adapter](https://github.com/microsoft/vscode-node-debug) and the [mono debug adapter]`,
 				`(https://github.com/microsoft/vscode-mono-debug) have their own repositories. For a complete list, please visit the [Related Projects](https://github.com/microsoft/vscode/wiki/Related-Projects) page on our [wiki](https://github.com/microsoft/vscode/wiki).`
 			));
 		assertNestedLineNumbersEqual(ranges![0], [0, 2]);
 	});
 	test('Smart select paragraph', async () => {
-		const ranges = await getSelectionRangesForDocument(`Many of the core components and extensions to ${CURSOR}VS Code live in their own repositories on GitHub. For example, the [node debug adapter](https://github.com/microsoft/vscode-node-debug) and the [mono debug adapter](https://github.com/microsoft/vscode-mono-debug) have their own repositories. For a complete list, please visit the [Related Projects](https://github.com/microsoft/vscode/wiki/Related-Projects) page on our [wiki](https://github.com/microsoft/vscode/wiki).`);
+		const ranges = await getSelectionRangesForDocument(`Many of the core components and extensions to ${CURSOR}VS Colgattium live in their own repositories on GitHub. For example, the [node debug adapter](https://github.com/microsoft/vscode-node-debug) and the [mono debug adapter](https://github.com/microsoft/vscode-mono-debug) have their own repositories. For a complete list, please visit the [Related Projects](https://github.com/microsoft/vscode/wiki/Related-Projects) page on our [wiki](https://github.com/microsoft/vscode/wiki).`);
 
 		assertNestedLineNumbersEqual(ranges![0], [0, 0]);
 	});
@@ -37,7 +37,7 @@ suite('markdown.SmartSelect', () => {
 		const ranges = await getSelectionRangesForDocument(
 			joinLines(
 				`<p align="center">`,
-				`${CURSOR}<img alt="VS Code in action" src="https://user-images.githubusercontent.com/1487073/58344409-70473b80-7e0a-11e9-8570-b2efc6f8fa44.png">`,
+				`${CURSOR}<img alt="VS Colgattium in action" src="https://user-images.githubusercontent.com/1487073/58344409-70473b80-7e0a-11e9-8570-b2efc6f8fa44.png">`,
 				`</p>`));
 
 		assertNestedLineNumbersEqual(ranges![0], [0, 2]);
@@ -66,7 +66,7 @@ suite('markdown.SmartSelect', () => {
 			joinLines(
 				`# Header`,
 				`${CURSOR}<p align="center">`,
-				`<img alt="VS Code in action" src="https://user-images.githubusercontent.com/1487073/58344409-70473b80-7e0a-11e9-8570-b2efc6f8fa44.png">`,
+				`<img alt="VS Colgattium in action" src="https://user-images.githubusercontent.com/1487073/58344409-70473b80-7e0a-11e9-8570-b2efc6f8fa44.png">`,
 				`</p>`));
 
 		assertNestedLineNumbersEqual(ranges![0], [1, 1], [1, 3], [0, 3]);

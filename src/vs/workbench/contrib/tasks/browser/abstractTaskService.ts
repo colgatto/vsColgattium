@@ -2795,7 +2795,7 @@ export abstract class AbstractTaskService extends Disposable implements ITaskSer
 							return;
 						}
 						if (response.code && response.code === TerminateResponseCode.ProcessNotFound) {
-							this.notificationService.error(nls.localize('TerminateAction.noProcess', 'The launched process doesn\'t exist anymore. If the task spawned background tasks exiting VS Code might result in orphaned processes.'));
+							this.notificationService.error(nls.localize('TerminateAction.noProcess', 'The launched process doesn\'t exist anymore. If the task spawned background tasks exiting VS Colgattium might result in orphaned processes.'));
 						} else {
 							this.notificationService.error(nls.localize('TerminateAction.failed', 'Failed to terminate running task'));
 						}

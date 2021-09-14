@@ -56,7 +56,7 @@
 			}
 		},
 		{
-			"label": "VS Code - Build",
+			"label": "VS Colgattium - Build",
 			"dependsOn": [
 				"Core - Build",
 				"Ext - Build"
@@ -92,7 +92,7 @@
 			"problemMatcher": "$tsc"
 		},
 		{
-			"label": "Kill VS Code - Build",
+			"label": "Kill VS Colgattium - Build",
 			"dependsOn": [
 				"Kill Core - Build",
 				"Kill Ext - Build"

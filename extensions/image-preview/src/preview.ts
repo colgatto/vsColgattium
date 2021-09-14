@@ -233,7 +233,7 @@ class Preview extends Disposable {
 	<div class="loading-indicator"></div>
 	<div class="image-load-error">
 		<p>${localize('preview.imageLoadError', "An error occurred while loading the image.")}</p>
-		<a href="#" class="open-file-link">${localize('preview.imageLoadErrorLink', "Open file using VS Code's standard text/binary editor?")}</a>
+		<a href="#" class="open-file-link">${localize('preview.imageLoadErrorLink', "Open file using VS Colgattium's standard text/binary editor?")}</a>
 	</div>
 	<script src="${escapeAttribute(this.extensionResource('/media/main.js'))}" nonce="${nonce}"></script>
 </body>

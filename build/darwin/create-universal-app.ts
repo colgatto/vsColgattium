@@ -21,11 +21,11 @@ async function main() {
 	}
 
 	const appName = product.nameLong + '.app';
-	const x64AppPath = path.join(buildDir, 'VSCode-darwin-x64', appName);
-	const arm64AppPath = path.join(buildDir, 'VSCode-darwin-arm64', appName);
+	const x64AppPath = path.join(buildDir, 'VSColgattium-darwin-x64', appName);
+	const arm64AppPath = path.join(buildDir, 'VSColgattium-darwin-arm64', appName);
 	const x64AsarPath = path.join(x64AppPath, 'Contents', 'Resources', 'app', 'node_modules.asar');
 	const arm64AsarPath = path.join(arm64AppPath, 'Contents', 'Resources', 'app', 'node_modules.asar');
-	const outAppPath = path.join(buildDir, `VSCode-darwin-${arch}`, appName);
+	const outAppPath = path.join(buildDir, `VSColgattium-darwin-${arch}`, appName);
 	const productJsonPath = path.resolve(outAppPath, 'Contents', 'Resources', 'app', 'product.json');
 	const infoPlistPath = path.resolve(outAppPath, 'Contents', 'Info.plist');
 

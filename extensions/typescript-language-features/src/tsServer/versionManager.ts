@@ -97,7 +97,7 @@ export class TypeScriptVersionManager extends Disposable {
 		return {
 			label: (!this.useWorkspaceTsdkSetting || !vscode.workspace.isTrusted
 				? '• '
-				: '') + localize('useVSCodeVersionOption', "Use VS Code's Version"),
+				: '') + localize('useVSCodeVersionOption', "Use VS Colgattium's Version"),
 			description: bundledVersion.displayName,
 			detail: bundledVersion.pathLabel,
 			run: async () => {

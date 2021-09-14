@@ -9,7 +9,7 @@ import { startClient, LanguageClientConstructor } from '../cssClient';
 import { ServerOptions, TransportKind, LanguageClientOptions, LanguageClient } from 'vscode-languageclient/node';
 import { TextDecoder } from 'util';
 
-// this method is called when vs code is activated
+// this method is called when VS Colgattium is activated
 export function activate(context: ExtensionContext) {
 	const clientMain = extensions.getExtension('vscode.css-language-features')?.packageJSON?.main || '';
 

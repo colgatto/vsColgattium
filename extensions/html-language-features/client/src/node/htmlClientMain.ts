@@ -14,7 +14,7 @@ import TelemetryReporter from 'vscode-extension-telemetry';
 
 let telemetry: TelemetryReporter | undefined;
 
-// this method is called when vs code is activated
+// this method is called when VS Colgattium is activated
 export function activate(context: ExtensionContext) {
 
 	let clientPackageJSON = getPackageInfo(context);

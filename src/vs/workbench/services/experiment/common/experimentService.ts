@@ -122,11 +122,11 @@ https://experimentation.visualstudio.com/Analysis%20and%20Experimentation/_git/A
 "X-MSEdge-Market": "detection.market",
 "X-FD-Corpnet": "detection.corpnet",
 "X-VSCode–AppVersion": "appversion",
-"X-VSCode-Build": "build",
+"X-VSColgattium-Build": "build",
 "X-MSEdge-ClientId": "clientid",
-"X-VSCode-ExtensionName": "extensionname",
-"X-VSCode-TargetPopulation": "targetpopulation",
-"X-VSCode-Language": "language"
+"X-VSColgattium-ExtensionName": "extensionname",
+"X-VSColgattium-TargetPopulation": "targetpopulation",
+"X-VSColgattium-Language": "language"
 */
 
 enum Filters {
@@ -143,12 +143,12 @@ enum Filters {
 	/**
 	 * Version of the application which uses experimentation service.
 	 */
-	ApplicationVersion = 'X-VSCode-AppVersion',
+	ApplicationVersion = 'X-VSColgattium-AppVersion',
 
 	/**
 	 * Insiders vs Stable.
 	 */
-	Build = 'X-VSCode-Build',
+	Build = 'X-VSColgattium-Build',
 
 	/**
 	 * Client Id which is used as primary unit for the experimentation.
@@ -158,18 +158,18 @@ enum Filters {
 	/**
 	 * Extension header.
 	 */
-	ExtensionName = 'X-VSCode-ExtensionName',
+	ExtensionName = 'X-VSColgattium-ExtensionName',
 
 	/**
-	 * The language in use by VS Code
+	 * The language in use by VS Colgattium
 	 */
-	Language = 'X-VSCode-Language',
+	Language = 'X-VSColgattium-Language',
 
 	/**
 	 * The target population.
 	 * This is used to separate internal, early preview, GA, etc.
 	 */
-	TargetPopulation = 'X-VSCode-TargetPopulation',
+	TargetPopulation = 'X-VSColgattium-TargetPopulation',
 }
 
 enum TargetPopulation {

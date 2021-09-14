@@ -6,7 +6,7 @@
 import { nbformat } from '@jupyterlab/coreutils';
 
 /**
- * Metadata we store in VS Code cell output items.
+ * Metadata we store in VS Colgattium cell output items.
  * This contains the original metadata from the Jupyter outputs.
  */
 export interface CellOutputMetadata {

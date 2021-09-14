@@ -264,14 +264,14 @@ CommandsRegistry.registerCommand({
 			{
 				name: 'options',
 				description: '(optional) Options for installing the extension. Object with the following properties: ' +
-					'`installOnlyNewlyAddedFromExtensionPackVSIX`: When enabled, VS Code installs only newly added extensions from the extension pack VSIX. This option is considered only when installing VSIX. ',
+					'`installOnlyNewlyAddedFromExtensionPackVSIX`: When enabled, VS Colgattium installs only newly added extensions from the extension pack VSIX. This option is considered only when installing VSIX. ',
 				isOptional: true,
 				schema: {
 					'type': 'object',
 					'properties': {
 						'installOnlyNewlyAddedFromExtensionPackVSIX': {
 							'type': 'boolean',
-							'description': localize('workbench.extensions.installExtension.option.installOnlyNewlyAddedFromExtensionPackVSIX', "When enabled, VS Code installs only newly added extensions from the extension pack VSIX. This option is considered only while installing a VSIX."),
+							'description': localize('workbench.extensions.installExtension.option.installOnlyNewlyAddedFromExtensionPackVSIX', "When enabled, VS Colgattium installs only newly added extensions from the extension pack VSIX. This option is considered only while installing a VSIX."),
 							default: false
 						}
 					}

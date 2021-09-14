@@ -93,7 +93,7 @@
 						"none",
 						"stopContainer"
 					],
-					"description": "Action to take when the VS Code window is closed. The default is to stop the container."
+					"description": "Action to take when the VS Colgattium window is closed. The default is to stop the container."
 				},
 				"overrideCommand": {
 					"type": "boolean",
@@ -277,7 +277,7 @@
 				},
 				"remoteUser": {
 					"type": "string",
-					"description": "The user VS Code Server will be started with. The default is the same user as the container."
+					"description": "The user VS Colgattium Server will be started with. The default is the same user as the container."
 				},
 				"initializeCommand": {
 					"type": [
@@ -352,7 +352,7 @@
 				},
 				"devPort": {
 					"type": "integer",
-					"description": "The port VS Code can use to connect to its backend."
+					"description": "The port VS Colgattium can use to connect to its backend."
 				},
 				"userEnvProbe": {
 					"type": "string",
@@ -483,7 +483,7 @@
 						"none",
 						"stopContainer"
 					],
-					"description": "Action to take when the VS Code window is closed. The default is to stop the container."
+					"description": "Action to take when the VS Colgattium window is closed. The default is to stop the container."
 				},
 				"overrideCommand": {
 					"type": "boolean",
@@ -667,7 +667,7 @@
 				},
 				"remoteUser": {
 					"type": "string",
-					"description": "The user VS Code Server will be started with. The default is the same user as the container."
+					"description": "The user VS Colgattium Server will be started with. The default is the same user as the container."
 				},
 				"initializeCommand": {
 					"type": [
@@ -742,7 +742,7 @@
 				},
 				"devPort": {
 					"type": "integer",
-					"description": "The port VS Code can use to connect to its backend."
+					"description": "The port VS Colgattium can use to connect to its backend."
 				},
 				"userEnvProbe": {
 					"type": "string",
@@ -839,7 +839,7 @@
 						"none",
 						"stopContainer"
 					],
-					"description": "Action to take when the VS Code window is closed. The default is to stop the container."
+					"description": "Action to take when the VS Colgattium window is closed. The default is to stop the container."
 				},
 				"overrideCommand": {
 					"type": "boolean",
@@ -1023,7 +1023,7 @@
 				},
 				"remoteUser": {
 					"type": "string",
-					"description": "The user VS Code Server will be started with. The default is the same user as the container."
+					"description": "The user VS Colgattium Server will be started with. The default is the same user as the container."
 				},
 				"initializeCommand": {
 					"type": [
@@ -1098,7 +1098,7 @@
 				},
 				"devPort": {
 					"type": "integer",
-					"description": "The port VS Code can use to connect to its backend."
+					"description": "The port VS Colgattium can use to connect to its backend."
 				},
 				"userEnvProbe": {
 					"type": "string",
@@ -1177,7 +1177,7 @@
 						"none",
 						"stopCompose"
 					],
-					"description": "Action to take when the VS Code window is closed. The default is to stop the containers."
+					"description": "Action to take when the VS Colgattium window is closed. The default is to stop the containers."
 				},
 				"overrideCommand": {
 					"type": "boolean",
@@ -1353,7 +1353,7 @@
 				},
 				"remoteUser": {
 					"type": "string",
-					"description": "The user VS Code Server will be started with. The default is the same user as the container."
+					"description": "The user VS Colgattium Server will be started with. The default is the same user as the container."
 				},
 				"initializeCommand": {
 					"type": [
@@ -1428,7 +1428,7 @@
 				},
 				"devPort": {
 					"type": "integer",
-					"description": "The port VS Code can use to connect to its backend."
+					"description": "The port VS Colgattium can use to connect to its backend."
 				},
 				"userEnvProbe": {
 					"type": "string",
@@ -1648,7 +1648,7 @@
 				},
 				"remoteUser": {
 					"type": "string",
-					"description": "The user VS Code Server will be started with. The default is the same user as the container."
+					"description": "The user VS Colgattium Server will be started with. The default is the same user as the container."
 				},
 				"initializeCommand": {
 					"type": [
@@ -1723,7 +1723,7 @@
 				},
 				"devPort": {
 					"type": "integer",
-					"description": "The port VS Code can use to connect to its backend."
+					"description": "The port VS Colgattium can use to connect to its backend."
 				},
 				"userEnvProbe": {
 					"type": "string",

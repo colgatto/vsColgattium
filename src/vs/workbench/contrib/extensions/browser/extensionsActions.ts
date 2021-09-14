@@ -123,7 +123,7 @@ export class PromptExtensionInstallFailureAction extends Action {
 		this.logService.error(this.error);
 
 		if (this.error.name === INSTALL_ERROR_NOT_SUPPORTED) {
-			const productName = isWeb ? localize('VS Code for Web', "{0} for the Web", this.productService.nameLong) : this.productService.nameLong;
+			const productName = isWeb ? localize('VS Colgattium for Web', "{0} for the Web", this.productService.nameLong) : this.productService.nameLong;
 			const message = localize('cannot be installed', "The '{0}' extension is not available in {1}. Click 'More Information' to learn more.", this.extension.displayName || this.extension.identifier.id, productName);
 			const result = await this.dialogService.show(Severity.Info, message, [localize('close', "Close"), localize('more information', "More Information")], { cancelId: 0 });
 			if (result.choice === 1) {
@@ -2012,7 +2012,7 @@ export class ExtensionStatusAction extends ExtensionAction {
 			}
 
 			if (this.extensionManagementServerService.webExtensionManagementServer) {
-				const productName = localize('VS Code for Web', "{0} for the Web", this.productService.nameLong);
+				const productName = localize('VS Colgattium for Web', "{0} for the Web", this.productService.nameLong);
 				let message;
 				if (this.extension.gallery.allTargetPlatforms.includes(TargetPlatform.WEB)) {
 					message = new MarkdownString(localize('user disabled', "You have configured the '{0}' extension to be disabled in {1}. To enable it, please open user settings and remove it from `remote.extensionKind` setting.", this.extension.displayName || this.extension.identifier.id, productName));

@@ -22,14 +22,14 @@ namespace snaps {
 
 	switch (process.platform) {
 		case 'darwin':
-			loaderFilepath = `VSCode-darwin/${product.nameLong}.app/Contents/Resources/app/out/vs/loader.js`;
-			startupBlobFilepath = `VSCode-darwin/${product.nameLong}.app/Contents/Frameworks/Electron Framework.framework/Resources/snapshot_blob.bin`;
+			loaderFilepath = `VSColgattium-darwin/${product.nameLong}.app/Contents/Resources/app/out/vs/loader.js`;
+			startupBlobFilepath = `VSColgattium-darwin/${product.nameLong}.app/Contents/Frameworks/Electron Framework.framework/Resources/snapshot_blob.bin`;
 			break;
 
 		case 'win32':
 		case 'linux':
-			loaderFilepath = `VSCode-${process.platform}-${arch}/resources/app/out/vs/loader.js`;
-			startupBlobFilepath = `VSCode-${process.platform}-${arch}/snapshot_blob.bin`;
+			loaderFilepath = `VSColgattium-${process.platform}-${arch}/resources/app/out/vs/loader.js`;
+			startupBlobFilepath = `VSColgattium-${process.platform}-${arch}/snapshot_blob.bin`;
 			break;
 
 		default:

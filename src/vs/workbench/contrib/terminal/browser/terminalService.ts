@@ -233,7 +233,7 @@ export class TerminalService implements ITerminalService {
 		this.onDidCreateInstance(() => this._refreshAvailableProfiles());
 		this.onDidReceiveInstanceLinks(instance => this._setInstanceLinkProviders(instance));
 
-		// Hide the panel if there are no more instances, provided that VS Code is not shutting
+		// Hide the panel if there are no more instances, provided that VS Colgattium is not shutting
 		// down. When shutting down the panel is locked in place so that it is restored upon next
 		// launch.
 		this._terminalGroupService.onDidChangeActiveInstance(instance => {

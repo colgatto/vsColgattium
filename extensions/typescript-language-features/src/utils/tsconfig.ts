@@ -137,7 +137,7 @@ export async function openProjectConfigForFile(
 		vscode.window.showInformationMessage(
 			localize(
 				'typescript.projectConfigNoWorkspace',
-				'Please open a folder in VS Code to use a TypeScript or JavaScript project'));
+				'Please open a folder in VS Colgattium to use a TypeScript or JavaScript project'));
 		return;
 	}
 

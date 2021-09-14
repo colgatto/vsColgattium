@@ -124,7 +124,7 @@ stages:
           Function: 'analyze'
           TargetPattern: 'guardianGlob'
           AnalyzeTargetGlob: '$(agent.builddirectory)\scanbin\**.dll;$(agent.builddirectory)\scanbin\**.exe;$(agent.builddirectory)\scanbin\**.node'
-          AnalyzeLocalSymbolDirectories: '$(agent.builddirectory)\scanbin\VSCode-win32-$(VSCODE_ARCH)\pdb'
+          AnalyzeLocalSymbolDirectories: '$(agent.builddirectory)\scanbin\VSColgattium-win32-$(VSCODE_ARCH)\pdb'
 
       - task: TSAUpload@2
         inputs:
@@ -236,7 +236,7 @@ stages:
         inputs:
           toolVersion: Latest
           InputType:   CommandLine
-          arguments:   analyze $(agent.builddirectory)\scanbin\exe\*.* --recurse --local-symbol-directories $(agent.builddirectory)\scanbin\VSCode-linux-$(VSCODE_ARCH)\pdb
+          arguments:   analyze $(agent.builddirectory)\scanbin\exe\*.* --recurse --local-symbol-directories $(agent.builddirectory)\scanbin\VSColgattium-linux-$(VSCODE_ARCH)\pdb
 
       - task: TSAUpload@2
         inputs:

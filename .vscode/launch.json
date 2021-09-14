@@ -72,7 +72,7 @@
 		{
 			"type": "extensionHost",
 			"request": "launch",
-			"name": "VS Code Emmet Tests",
+			"name": "VS Colgattium Emmet Tests",
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"${workspaceFolder}/extensions/emmet/test-workspace",
@@ -90,7 +90,7 @@
 		{
 			"type": "extensionHost",
 			"request": "launch",
-			"name": "VS Code Git Tests",
+			"name": "VS Colgattium Git Tests",
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"/tmp/my4g9l",
@@ -108,7 +108,7 @@
 		{
 			"type": "extensionHost",
 			"request": "launch",
-			"name": "VS Code API Tests (single folder)",
+			"name": "VS Colgattium API Tests (single folder)",
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				// "${workspaceFolder}", // Uncomment for running out of sources.
@@ -128,7 +128,7 @@
 		{
 			"type": "extensionHost",
 			"request": "launch",
-			"name": "VS Code API Tests (workspace)",
+			"name": "VS Colgattium API Tests (workspace)",
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"${workspaceFolder}/extensions/vscode-api-tests/testworkspace.code-workspace",
@@ -146,7 +146,7 @@
 		{
 			"type": "extensionHost",
 			"request": "launch",
-			"name": "VS Code Tokenizer Tests",
+			"name": "VS Colgattium Tokenizer Tests",
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"${workspaceFolder}/extensions/vscode-colorize-tests/test",
@@ -164,7 +164,7 @@
 		{
 			"type": "extensionHost",
 			"request": "launch",
-			"name": "VS Code Custom Editor Tests",
+			"name": "VS Colgattium Custom Editor Tests",
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"${workspaceFolder}/extensions/vscode-custom-editor-tests/test-workspace",
@@ -182,7 +182,7 @@
 		{
 			"type": "pwa-chrome",
 			"request": "attach",
-			"name": "Attach to VS Code",
+			"name": "Attach to VS Colgattium",
 			"browserAttachLocation": "workspace",
 			"port": 9222,
 			"outFiles": [
@@ -196,7 +196,7 @@
 		{
 			"type": "pwa-chrome",
 			"request": "launch",
-			"name": "Launch VS Code Internal",
+			"name": "Launch VS Colgattium Internal",
 			"windows": {
 				"runtimeExecutable": "${workspaceFolder}/scripts/code.bat"
 			},
@@ -239,7 +239,7 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "VS Code (Web)",
+			"name": "VS Colgattium (Web)",
 			"program": "${workspaceFolder}/resources/web/code-web.js",
 			"presentation": {
 				"group": "0_vscode",
@@ -272,7 +272,7 @@
 			"request": "launch",
 			"outFiles": [],
 			"perScriptSourcemaps": "yes",
-			"name": "VS Code (Web, Chrome)",
+			"name": "VS Colgattium (Web, Chrome)",
 			"url": "http://localhost:8080",
 			"preLaunchTask": "Run web",
 			"presentation": {
@@ -285,7 +285,7 @@
 			"request": "launch",
 			"outFiles": [],
 			"perScriptSourcemaps": "yes",
-			"name": "VS Code (Web, Edge)",
+			"name": "VS Colgattium (Web, Edge)",
 			"url": "http://localhost:8080",
 			"pauseForSourceMap": false,
 			"preLaunchTask": "Run web",
@@ -380,12 +380,12 @@
 			"request": "launch",
 			"name": "Run Unit Tests",
 			"program": "${workspaceFolder}/test/unit/electron/index.js",
-			"runtimeExecutable": "${workspaceFolder}/.build/electron/Code - OSS.app/Contents/MacOS/Electron",
+			"runtimeExecutable": "${workspaceFolder}/.build/electron/VSColgattium.app/Contents/MacOS/Electron",
 			"windows": {
-				"runtimeExecutable": "${workspaceFolder}/.build/electron/Code - OSS.exe"
+				"runtimeExecutable": "${workspaceFolder}/.build/electron/VSColgattium.exe"
 			},
 			"linux": {
-				"runtimeExecutable": "${workspaceFolder}/.build/electron/code-oss"
+				"runtimeExecutable": "${workspaceFolder}/.build/electron/colgattium"
 			},
 			"outputCapture": "std",
 			"args": [
@@ -396,7 +396,7 @@
 				"${workspaceFolder}/out/**/*.js"
 			],
 			"cascadeTerminateToConfigurations": [
-				"Attach to VS Code"
+				"Attach to VS Colgattium"
 			],
 			"env": {
 				"MOCHA_COLORS": "true"
@@ -410,15 +410,15 @@
 			"request": "launch",
 			"name": "Run Unit Tests For Current File",
 			"program": "${workspaceFolder}/test/unit/electron/index.js",
-			"runtimeExecutable": "${workspaceFolder}/.build/electron/Code - OSS.app/Contents/MacOS/Electron",
+			"runtimeExecutable": "${workspaceFolder}/.build/electron/VSColgattium.app/Contents/MacOS/Electron",
 			"windows": {
-				"runtimeExecutable": "${workspaceFolder}/.build/electron/Code - OSS.exe"
+				"runtimeExecutable": "${workspaceFolder}/.build/electron/VSColgattium.exe"
 			},
 			"linux": {
-				"runtimeExecutable": "${workspaceFolder}/.build/electron/code-oss"
+				"runtimeExecutable": "${workspaceFolder}/.build/electron/colgattium"
 			},
 			"cascadeTerminateToConfigurations": [
-				"Attach to VS Code"
+				"Attach to VS Colgattium"
 			],
 			"outputCapture": "std",
 			"args": [
@@ -447,7 +447,7 @@
 			"port": 9999,
 			"args": [
 				"-l",
-				"${workspaceFolder}/.build/electron/Code - OSS.app/Contents/MacOS/Electron"
+				"${workspaceFolder}/.build/electron/VSColgattium.app/Contents/MacOS/Electron"
 			],
 			"outFiles": [
 				"${cwd}/out/**/*.js"
@@ -470,10 +470,10 @@
 	],
 	"compounds": [
 		{
-			"name": "VS Code",
+			"name": "VS Colgattium",
 			"stopAll": true,
 			"configurations": [
-				"Launch VS Code Internal",
+				"Launch VS Colgattium Internal",
 				"Attach to Main Process",
 				"Attach to Extension Host",
 				"Attach to Shared Process",
@@ -487,7 +487,7 @@
 		{
 			"name": "Search and Renderer processes",
 			"configurations": [
-				"Launch VS Code Internal",
+				"Launch VS Colgattium Internal",
 				"Attach to Search Process"
 			],
 			"presentation": {
@@ -498,7 +498,7 @@
 		{
 			"name": "Renderer and Extension Host processes",
 			"configurations": [
-				"Launch VS Code Internal",
+				"Launch VS Colgattium Internal",
 				"Attach to Extension Host"
 			],
 			"presentation": {
@@ -509,7 +509,7 @@
 		{
 			"name": "Debug Unit Tests",
 			"configurations": [
-				"Attach to VS Code",
+				"Attach to VS Colgattium",
 				"Run Unit Tests"
 			],
 			"presentation": {
@@ -520,7 +520,7 @@
 		{
 			"name": "Debug Unit Tests (Current File)",
 			"configurations": [
-				"Attach to VS Code",
+				"Attach to VS Colgattium",
 				"Run Unit Tests For Current File"
 			],
 			"presentation": {
@@ -529,10 +529,10 @@
 			}
 		},
 		{
-			"name": "Launch VS Code",
+			"name": "Launch VS Colgattium",
 			"stopAll": true,
 			"configurations": [
-				"Launch VS Code Internal",
+				"Launch VS Colgattium Internal",
 			],
 			"preLaunchTask": "Ensure Prelaunch Dependencies"
 		},

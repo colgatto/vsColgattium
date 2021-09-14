@@ -15,7 +15,7 @@ import { RequestService } from '../requests';
 
 let telemetry: TelemetryReporter | undefined;
 
-// this method is called when vs code is activated
+// this method is called when VS Colgattium is activated
 export function activate(context: ExtensionContext) {
 
 	const clientPackageJSON = getPackageInfo(context);

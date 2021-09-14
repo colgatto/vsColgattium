@@ -239,8 +239,8 @@ const requestHandler = (req, res) => {
 			// manifest
 			res.writeHead(200, { 'Content-Type': 'application/json' });
 			return res.end(JSON.stringify({
-				'name': 'Code - OSS',
-				'short_name': 'Code - OSS',
+				'name': 'code',
+				'short_name': 'code',
 				'start_url': '/',
 				'lang': 'en-US',
 				'display': 'standalone'

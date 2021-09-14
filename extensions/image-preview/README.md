@@ -4,7 +4,7 @@
 
 ## Features
 
-This extension provides VS Code's built-in image preview functionality.
+This extension provides VS Colgattium's built-in image preview functionality.
 
 Supported image formats:
 

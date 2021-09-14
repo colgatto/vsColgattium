@@ -69,7 +69,7 @@ export class DiskTypeScriptVersionProvider implements ITypeScriptVersionProvider
 
 		vscode.window.showErrorMessage(localize(
 			'noBundledServerFound',
-			'VS Code\'s tsserver was deleted by another application such as a misbehaving virus detection tool. Please reinstall VS Code.'));
+			'VS Colgattium\'s tsserver was deleted by another application such as a misbehaving virus detection tool. Please reinstall VS Colgattium.'));
 		throw new Error('Could not find bundled tsserver.js');
 	}
 

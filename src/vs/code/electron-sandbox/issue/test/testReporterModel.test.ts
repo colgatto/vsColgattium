@@ -31,7 +31,7 @@ Issue Type: <b>Bug</b>
 
 undefined
 
-VS Code version: undefined
+VS Colgattium version: undefined
 OS version: undefined
 Restricted Mode: No
 
@@ -62,7 +62,7 @@ Issue Type: <b>Bug</b>
 
 undefined
 
-VS Code version: undefined
+VS Colgattium version: undefined
 OS version: undefined
 Restricted Mode: No
 
@@ -106,7 +106,7 @@ Issue Type: <b>Bug</b>
 
 undefined
 
-VS Code version: undefined
+VS Colgattium version: undefined
 OS version: undefined
 Restricted Mode: No
 
@@ -161,7 +161,7 @@ Issue Type: <b>Bug</b>
 
 undefined
 
-VS Code version: undefined
+VS Colgattium version: undefined
 OS version: undefined
 Restricted Mode: No
 
@@ -218,7 +218,7 @@ Issue Type: <b>Bug</b>
 
 undefined
 
-VS Code version: undefined
+VS Colgattium version: undefined
 OS version: undefined
 Restricted Mode: No
 Remote OS version: Linux x64 4.18.0
@@ -267,7 +267,7 @@ Issue Type: <b>Bug</b>
 
 undefined
 
-VS Code version: undefined
+VS Colgattium version: undefined
 OS version: undefined
 Restricted Mode: No
 

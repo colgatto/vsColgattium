@@ -58,8 +58,8 @@ export class LocalizationWorkbenchContribution extends Disposable implements IWo
 					const updateAndRestart = platform.locale !== locale;
 					this.notificationService.prompt(
 						Severity.Info,
-						updateAndRestart ? localize('updateLocale', "Would you like to change VS Code's UI language to {0} and restart?", e.local.manifest.contributes.localizations[0].languageName || e.local.manifest.contributes.localizations[0].languageId)
-							: localize('activateLanguagePack', "In order to use VS Code in {0}, VS Code needs to restart.", e.local.manifest.contributes.localizations[0].languageName || e.local.manifest.contributes.localizations[0].languageId),
+						updateAndRestart ? localize('updateLocale', "Would you like to change VS Colgattium's UI language to {0} and restart?", e.local.manifest.contributes.localizations[0].languageName || e.local.manifest.contributes.localizations[0].languageId)
+							: localize('activateLanguagePack', "In order to use VS Colgattium in {0}, VS Colgattium needs to restart.", e.local.manifest.contributes.localizations[0].languageName || e.local.manifest.contributes.localizations[0].languageId),
 						[{
 							label: updateAndRestart ? localize('changeAndRestart', "Change Language and Restart") : localize('restart', "Restart"),
 							run: () => {
@@ -248,9 +248,9 @@ ExtensionsRegistry.registerExtensionPoint({
 						properties: {
 							id: {
 								type: 'string',
-								description: localize('vscode.extension.contributes.localizations.translations.id', "Id of VS Code or Extension for which this translation is contributed to. Id of VS Code is always `vscode` and of extension should be in format `publisherId.extensionName`."),
+								description: localize('vscode.extension.contributes.localizations.translations.id', "Id of VS Colgattium or Extension for which this translation is contributed to. Id of VS Colgattium is always `vscode` and of extension should be in format `publisherId.extensionName`."),
 								pattern: '^((vscode)|([a-z0-9A-Z][a-z0-9\-A-Z]*)\\.([a-z0-9A-Z][a-z0-9\-A-Z]*))$',
-								patternErrorMessage: localize('vscode.extension.contributes.localizations.translations.id.pattern', "Id should be `vscode` or in format `publisherId.extensionName` for translating VS code or an extension respectively.")
+								patternErrorMessage: localize('vscode.extension.contributes.localizations.translations.id.pattern', "Id should be `vscode` or in format `publisherId.extensionName` for translating VS Colgattium or an extension respectively.")
 							},
 							path: {
 								type: 'string',

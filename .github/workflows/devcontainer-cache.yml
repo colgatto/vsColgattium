@@ -1,4 +1,4 @@
-name: VS Code Repo Dev Container Cache Image Generation
+name: VS Colgattium Repo Dev Container Cache Image Generation
 
 on:
   workflow_dispatch:

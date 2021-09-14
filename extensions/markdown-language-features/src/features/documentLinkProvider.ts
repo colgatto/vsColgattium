@@ -17,7 +17,7 @@ function parseLink(
 ): { uri: vscode.Uri, tooltip?: string } | undefined {
 	const externalSchemeUri = getUriForLinkWithKnownExternalScheme(link);
 	if (externalSchemeUri) {
-		// Normalize VS Code links to target currently running version
+		// Normalize VS Colgattium links to target currently running version
 		if (isOfScheme(Schemes.vscode, link) || isOfScheme(Schemes['vscode-insiders'], link)) {
 			return { uri: vscode.Uri.parse(link).with({ scheme: vscode.env.uriScheme }) };
 		}

@@ -261,7 +261,7 @@ export function startClient(context: ExtensionContext, newLanguageClient: Langua
 					context.globalState.update(promptForLinkedEditingKey, false);
 					activeEditorListener.dispose();
 					const configure = localize('configureButton', 'Configure');
-					const res = await window.showInformationMessage(localize('linkedEditingQuestion', 'VS Code now has built-in support for auto-renaming tags. Do you want to enable it?'), configure);
+					const res = await window.showInformationMessage(localize('linkedEditingQuestion', 'VS Colgattium now has built-in support for auto-renaming tags. Do you want to enable it?'), configure);
 					if (res === configure) {
 						commands.executeCommand('workbench.action.openSettings', SettingIds.linkedEditing);
 					}

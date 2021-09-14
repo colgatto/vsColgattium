@@ -103,7 +103,7 @@ export class ExternalTerminalContribution implements IWorkbenchContribution {
 						'external'
 					],
 					enumDescriptions: [
-						nls.localize('terminal.explorerKind.integrated', "Use VS Code's integrated terminal."),
+						nls.localize('terminal.explorerKind.integrated', "Use VS Colgattium's integrated terminal."),
 						nls.localize('terminal.explorerKind.external', "Use the configured external terminal.")
 					],
 					description: nls.localize('explorer.openInTerminalKind', "Customizes what kind of terminal to launch."),

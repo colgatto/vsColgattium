@@ -66,7 +66,7 @@ class CESContribution extends Disposable implements IWorkbenchContribution {
 			this.telemetryService.publicLog('cesSurvey:popup', { userReaction });
 		};
 
-		const message = await this.tasExperimentService?.getTreatment<string>('CESSurveyMessage') ?? nls.localize('cesSurveyQuestion', 'Got a moment to help the VS Code team? Please tell us about your experience with VS Code so far.');
+		const message = await this.tasExperimentService?.getTreatment<string>('CESSurveyMessage') ?? nls.localize('cesSurveyQuestion', 'Got a moment to help the VS Colgattium team? Please tell us about your experience with VS Colgattium so far.');
 		const button = await this.tasExperimentService?.getTreatment<string>('CESSurveyButton') ?? nls.localize('giveFeedback', "Give Feedback");
 
 		const notification = this.notificationService.prompt(

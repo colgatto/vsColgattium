@@ -3239,13 +3239,13 @@ export class TimelineItem implements vscode.TimelineItem {
 export enum ExtensionMode {
 	/**
 	 * The extension is installed normally (for example, from the marketplace
-	 * or VSIX) in VS Code.
+	 * or VSIX) in VS Colgattium.
 	 */
 	Production = 1,
 
 	/**
 	 * The extension is running from an `--extensionDevelopmentPath` provided
-	 * when launching VS Code.
+	 * when launching VS Colgattium.
 	 */
 	Development = 2,
 

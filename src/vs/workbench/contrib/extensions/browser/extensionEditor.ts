@@ -426,7 +426,7 @@ export class ExtensionEditor extends EditorPane {
 			combinedInstallAction.manifest = manifest;
 		}
 		if (manifest && manifest.contributes) {
-			template.navbar.push(ExtensionEditorTab.Contributions, localize('contributions', "Feature Contributions"), localize('contributionstooltip', "Lists contributions to VS Code by this extension"));
+			template.navbar.push(ExtensionEditorTab.Contributions, localize('contributions', "Feature Contributions"), localize('contributionstooltip', "Lists contributions to VS Colgattium by this extension"));
 		}
 		if (extension.hasChangelog()) {
 			template.navbar.push(ExtensionEditorTab.Changelog, localize('changelog', "Changelog"), localize('changelogtooltip', "Extension update history, rendered from the extension's 'CHANGELOG.md' file"));

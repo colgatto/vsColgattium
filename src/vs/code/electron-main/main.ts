@@ -61,11 +61,11 @@ import { IThemeMainService, ThemeMainService } from 'vs/platform/theme/electron-
 import 'vs/platform/update/common/update.config.contribution';
 
 /**
- * The main VS Code entry point.
+ * The main VS Colgattium entry point.
  *
- * Note: This class can exist more than once for example when VS Code is already
+ * Note: This class can exist more than once for example when VS Colgattium is already
  * running and a second instance is started from the command line. It will always
- * try to communicate with an existing instance to prevent that 2 VS Code instances
+ * try to communicate with an existing instance to prevent that 2 VS Colgattium instances
  * are running at the same time.
  */
 class CodeMain {
@@ -109,7 +109,7 @@ class CodeMain {
 
 				// Create the main IPC server by trying to be the server
 				// If this throws an error it means we are not the first
-				// instance of VS Code running and so we would quit.
+				// instance of VS Colgattium running and so we would quit.
 				const mainProcessNodeIpcServer = await this.claimInstance(logService, environmentMainService, lifecycleMainService, instantiationService, productService, true);
 
 				// Write a lockfile to indicate an instance is running (https://github.com/microsoft/vscode/issues/127861#issuecomment-877417451)

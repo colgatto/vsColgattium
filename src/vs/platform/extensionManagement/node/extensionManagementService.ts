@@ -109,7 +109,7 @@ export class ExtensionManagementService extends AbstractExtensionManagementServi
 		const downloadLocation = await this.downloadVsix(vsix);
 		const manifest = await getManifest(path.resolve(downloadLocation.fsPath));
 		if (manifest.engines && manifest.engines.vscode && !isEngineValid(manifest.engines.vscode, product.version, product.date)) {
-			throw new Error(nls.localize('incompatible', "Unable to install extension '{0}' as it is not compatible with VS Code '{1}'.", getGalleryExtensionId(manifest.publisher, manifest.name), product.version));
+			throw new Error(nls.localize('incompatible', "Unable to install extension '{0}' as it is not compatible with VS Colgattium '{1}'.", getGalleryExtensionId(manifest.publisher, manifest.name), product.version));
 		}
 
 		return this.installExtension(manifest, downloadLocation, options);
@@ -199,9 +199,9 @@ abstract class AbstractInstallExtensionTask extends AbstractExtensionTask<ILocal
 			}
 		} catch (e) {
 			if (isMacintosh) {
-				throw new ExtensionManagementError(nls.localize('quitCode', "Unable to install the extension. Please Quit and Start VS Code before reinstalling."), INSTALL_ERROR_UNSET_UNINSTALLED);
+				throw new ExtensionManagementError(nls.localize('quitCode', "Unable to install the extension. Please Quit and Start VS Colgattium before reinstalling."), INSTALL_ERROR_UNSET_UNINSTALLED);
 			} else {
-				throw new ExtensionManagementError(nls.localize('exitCode', "Unable to install the extension. Please Exit and Start VS Code before reinstalling."), INSTALL_ERROR_UNSET_UNINSTALLED);
+				throw new ExtensionManagementError(nls.localize('exitCode', "Unable to install the extension. Please Exit and Start VS Colgattium before reinstalling."), INSTALL_ERROR_UNSET_UNINSTALLED);
 			}
 		}
 		return this.extract(installableExtension, token);
@@ -317,7 +317,7 @@ class InstallVSIXTask extends AbstractInstallExtensionTask {
 				try {
 					await this.extensionsScanner.removeExtension(existing, 'existing');
 				} catch (e) {
-					throw new Error(nls.localize('restartCode', "Please restart VS Code before reinstalling {0}.", this.manifest.displayName || this.manifest.name));
+					throw new Error(nls.localize('restartCode', "Please restart VS Colgattium before reinstalling {0}.", this.manifest.displayName || this.manifest.name));
 				}
 			} else if (semver.gt(existing.manifest.version, this.manifest.version)) {
 				await this.extensionsScanner.setUninstalled(existing);
@@ -330,7 +330,7 @@ class InstallVSIXTask extends AbstractInstallExtensionTask {
 				try {
 					await this.extensionsScanner.removeExtension(existing, 'existing');
 				} catch (e) {
-					throw new Error(nls.localize('restartCode', "Please restart VS Code before reinstalling {0}.", this.manifest.displayName || this.manifest.name));
+					throw new Error(nls.localize('restartCode', "Please restart VS Colgattium before reinstalling {0}.", this.manifest.displayName || this.manifest.name));
 				}
 			}
 		}
@@ -381,7 +381,7 @@ class UninstallExtensionTask extends AbstractExtensionTask<void> implements IUni
 						await this.extensionsScanner.removeUninstalledExtension(extension);
 					}
 				} catch (e) {
-					throw new Error(nls.localize('removeError', "Error while removing the extension: {0}. Please Quit and Start VS Code before trying again.", toErrorMessage(e)));
+					throw new Error(nls.localize('removeError', "Error while removing the extension: {0}. Please Quit and Start VS Colgattium before trying again.", toErrorMessage(e)));
 				}
 			}
 		}

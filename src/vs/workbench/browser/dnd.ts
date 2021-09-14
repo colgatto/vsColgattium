@@ -345,7 +345,7 @@ export function fillEditorsDragData(accessor: ServicesAccessor, resourcesOrEdito
 		}
 	}
 
-	// Resource URLs: allows to drop multiple file resources to a target in VS Code
+	// Resource URLs: allows to drop multiple file resources to a target in VS Colgattium
 	const files = fileSystemResources.filter(({ isDirectory }) => !isDirectory);
 	if (files.length) {
 		event.dataTransfer.setData(DataTransfers.RESOURCES, JSON.stringify(files.map(({ resource }) => resource.toString())));

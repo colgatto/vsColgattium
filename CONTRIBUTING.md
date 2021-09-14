@@ -1,6 +1,6 @@
-# Contributing to VS Code
+# Contributing to VS Colgattium
 
-Welcome, and thank you for your interest in contributing to VS Code!
+Welcome, and thank you for your interest in contributing to VS Colgattium!
 
 There are many ways in which you can contribute, beyond writing code. The goal of this document is to provide a high-level overview of how you can get involved.
 
@@ -18,11 +18,11 @@ See the [Feedback Channels](https://github.com/microsoft/vscode/wiki/Feedback-Ch
 
 ## Reporting Issues
 
-Have you identified a reproducible problem in VS Code? Have a feature request? We want to hear about it! Here's how you can make reporting your issue as effective as possible.
+Have you identified a reproducible problem in VS Colgattium? Have a feature request? We want to hear about it! Here's how you can make reporting your issue as effective as possible.
 
 ### Identify Where to Report
 
-The VS Code project is distributed across multiple repositories. Try to file the issue against the correct repository. Check the list of [Related Projects](https://github.com/microsoft/vscode/wiki/Related-Projects) if you aren't sure which repo is correct.
+The VS Colgattium project is distributed across multiple repositories. Try to file the issue against the correct repository. Check the list of [Related Projects](https://github.com/microsoft/vscode/wiki/Related-Projects) if you aren't sure which repo is correct.
 
 Can you recreate the issue even after [disabling all extensions](https://code.visualstudio.com/docs/editor/extension-gallery#_disable-an-extension)? If you find the issue is caused by an extension you have installed, please file an issue on the extension's repo directly.
 
@@ -47,11 +47,11 @@ Do not add your issue as a comment to an existing issue unless it's for the iden
 
 The more information you can provide, the more likely someone will be successful at reproducing the issue and finding a fix.
 
-The built-in tool for reporting an issue, which you can access by using `Report Issue` in VS Code's Help menu, can help streamline this process by automatically providing the version of VS Code, all your installed extensions, and your system info. Additionally, the tool will search among existing issues to see if a similar issue already exists.
+The built-in tool for reporting an issue, which you can access by using `Report Issue` in VS Colgattium's Help menu, can help streamline this process by automatically providing the version of VS Colgattium, all your installed extensions, and your system info. Additionally, the tool will search among existing issues to see if a similar issue already exists.
 
 Please include the following with each issue:
 
-* Version of VS Code
+* Version of VS Colgattium
 
 * Your operating system
 
@@ -91,7 +91,7 @@ We use GitHub Actions to help us manage issues. These Actions and their descript
 
 * Automatically closes any issue marked `needs-more-info` if there has been no response in the past 7 days.
 * Automatically lock issues 45 days after they are closed.
-* Automatically implement the VS Code [feature request pipeline](https://github.com/microsoft/vscode/wiki/Issues-Triaging#managing-feature-requests).
+* Automatically implement the VS Colgattium [feature request pipeline](https://github.com/microsoft/vscode/wiki/Issues-Triaging#managing-feature-requests).
 
 If you believe the bot got something wrong, please open a new issue and let us know.
 

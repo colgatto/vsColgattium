@@ -90,7 +90,7 @@ export class NativeRemoteExtensionManagementService extends WebRemoteExtensionMa
 		}
 		const compatible = await this.galleryService.getCompatibleExtension(extension, getTargetPlatformFromOS(remoteEnvironment.os, remoteEnvironment.arch));
 		if (!compatible) {
-			return Promise.reject(new Error(localize('incompatible', "Unable to install extension '{0}' as it is not compatible with VS Code '{1}'.", extension.identifier.id, this.productService.version)));
+			return Promise.reject(new Error(localize('incompatible', "Unable to install extension '{0}' as it is not compatible with VS Colgattium '{1}'.", extension.identifier.id, this.productService.version)));
 		}
 		const location = joinPath(this.environmentService.tmpDir, generateUuid());
 		this.logService.info('Downloaded extension:', compatible.identifier.id, location.path);

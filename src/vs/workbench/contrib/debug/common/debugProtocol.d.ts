@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 
-/** Declaration module describing the VS Code debug protocol.
+/** Declaration module describing the VS Colgattium debug protocol.
 	Auto-generated from json schema. Do not edit manually.
 */
 declare module DebugProtocol {

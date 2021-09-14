@@ -191,7 +191,7 @@ function sanitize(documentContent: string): string {
 /**
  * Renders a string of markdown as a document.
  *
- * Uses VS Code's syntax highlighting code blocks.
+ * Uses VS Colgattium's syntax highlighting code blocks.
  */
 export async function renderMarkdownDocument(
 	text: string,

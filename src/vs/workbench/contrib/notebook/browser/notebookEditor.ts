@@ -211,7 +211,7 @@ export class NotebookEditor extends EditorPane {
 				Severity.Error,
 				localize('fail.noEditor', "Cannot open resource with notebook editor type '{0}', please check if you have the right extension installed or enabled.", input.viewType),
 				[{
-					label: localize('fail.reOpen', "Reopen file with VS Code standard text editor"),
+					label: localize('fail.reOpen', "Reopen file with VS Colgattium standard text editor"),
 					run: async () => {
 						await this._editorService.openEditor({ resource: input.resource, options: { ...options, override: EditorResolution.DISABLED } });
 					}

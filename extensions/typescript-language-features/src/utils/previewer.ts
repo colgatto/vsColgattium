@@ -8,7 +8,7 @@ import type * as Proto from '../protocol';
 
 export interface IFilePathToResourceConverter {
 	/**
-	 * Convert a typescript filepath to a VS Code resource.
+	 * Convert a typescript filepath to a VS Colgattium resource.
 	 */
 	toResource(filepath: string): vscode.Uri;
 }

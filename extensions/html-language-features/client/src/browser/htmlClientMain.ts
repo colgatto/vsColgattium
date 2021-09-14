@@ -15,7 +15,7 @@ declare const TextDecoder: {
 	new(encoding?: string): { decode(buffer: ArrayBuffer): string; };
 };
 
-// this method is called when vs code is activated
+// this method is called when VS Colgattium is activated
 export function activate(context: ExtensionContext) {
 	const serverMain = Uri.joinPath(context.extensionUri, 'server/dist/browser/htmlServerMain.js');
 	try {

@@ -44,8 +44,8 @@ function registerVariableCompletions(pattern: string): vscode.Disposable {
 				const startPosition = indexOf$ >= 0 ? new vscode.Position(position.line, indexOf$) : position;
 
 				return [
-					{ label: 'workspaceFolder', detail: localize('workspaceFolder', "The path of the folder opened in VS Code") },
-					{ label: 'workspaceFolderBasename', detail: localize('workspaceFolderBasename', "The name of the folder opened in VS Code without any slashes (/)") },
+					{ label: 'workspaceFolder', detail: localize('workspaceFolder', "The path of the folder opened in VS Colgattium") },
+					{ label: 'workspaceFolderBasename', detail: localize('workspaceFolderBasename', "The name of the folder opened in VS Colgattium without any slashes (/)") },
 					{ label: 'relativeFile', detail: localize('relativeFile', "The current opened file relative to ${workspaceFolder}") },
 					{ label: 'relativeFileDirname', detail: localize('relativeFileDirname', "The current opened file's dirname relative to ${workspaceFolder}") },
 					{ label: 'file', detail: localize('file', "The current opened file") },

@@ -173,7 +173,7 @@ function getVsCodeApiScript(allowMultipleAPIAcquire, state) {
 
 				return () => {
 					if (acquired && !${allowMultipleAPIAcquire}) {
-						throw new Error('An instance of the VS Code API has already been acquired');
+						throw new Error('An instance of the VS Colgattium API has already been acquired');
 					}
 					acquired = true;
 					return Object.freeze({
@@ -500,7 +500,7 @@ const handleAuxClick =
  */
 const handleInnerKeydown = (e) => {
 	// If the keypress would trigger a browser event, such as copy or paste,
-	// make sure we block the browser from dispatching it. Instead VS Code
+	// make sure we block the browser from dispatching it. Instead VS Colgattium
 	// handles these events and will dispatch a copy/paste back to the webview
 	// if needed
 	if (isUndoRedo(e) || isPrint(e)) {

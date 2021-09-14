@@ -126,7 +126,7 @@ export class ClientCapabilities {
 
 export interface ITypeScriptServiceClient {
 	/**
-	 * Convert a resource (VS Code) to a normalized path (TypeScript).
+	 * Convert a resource (VS Colgattium) to a normalized path (TypeScript).
 	 *
 	 * Does not try handling case insensitivity.
 	 */

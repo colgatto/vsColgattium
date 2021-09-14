@@ -225,7 +225,7 @@ const terminalConfiguration: IConfigurationNode = {
 			default: 1000
 		},
 		[TerminalSettingId.DetectLocale]: {
-			markdownDescription: localize('terminal.integrated.detectLocale', "Controls whether to detect and set the `$LANG` environment variable to a UTF-8 compliant option since VS Code's terminal only supports UTF-8 encoded data coming from the shell."),
+			markdownDescription: localize('terminal.integrated.detectLocale', "Controls whether to detect and set the `$LANG` environment variable to a UTF-8 compliant option since VS Colgattium's terminal only supports UTF-8 encoded data coming from the shell."),
 			type: 'string',
 			enum: ['auto', 'off', 'on'],
 			markdownEnumDescriptions: [
@@ -239,7 +239,7 @@ const terminalConfiguration: IConfigurationNode = {
 			type: 'string',
 			enum: ['auto', 'on', 'off', 'canvas'],
 			markdownEnumDescriptions: [
-				localize('terminal.integrated.gpuAcceleration.auto', "Let VS Code detect which renderer will give the best experience."),
+				localize('terminal.integrated.gpuAcceleration.auto', "Let VS Colgattium detect which renderer will give the best experience."),
 				localize('terminal.integrated.gpuAcceleration.on', "Enable GPU acceleration within the terminal."),
 				localize('terminal.integrated.gpuAcceleration.off', "Disable GPU acceleration within the terminal."),
 				localize('terminal.integrated.gpuAcceleration.canvas', "Use the fallback canvas renderer within the terminal. This uses a 2d context instead of webgl and may be better on some systems.")
@@ -296,7 +296,7 @@ const terminalConfiguration: IConfigurationNode = {
 		[TerminalSettingId.CommandsToSkipShell]: {
 			markdownDescription: localize(
 				'terminal.integrated.commandsToSkipShell',
-				"A set of command IDs whose keybindings will not be sent to the shell but instead always be handled by VS Code. This allows keybindings that would normally be consumed by the shell to act instead the same as when the terminal is not focused, for example `Ctrl+P` to launch Quick Open.\n\n&nbsp;\n\nMany commands are skipped by default. To override a default and pass that command's keybinding to the shell instead, add the command prefixed with the `-` character. For example add `-workbench.action.quickOpen` to allow `Ctrl+P` to reach the shell.\n\n&nbsp;\n\nThe following list of default skipped commands is truncated when viewed in Settings Editor. To see the full list, {1} and search for the first command from the list below.\n\n&nbsp;\n\nDefault Skipped Commands:\n\n{0}",
+				"A set of command IDs whose keybindings will not be sent to the shell but instead always be handled by VS Colgattium. This allows keybindings that would normally be consumed by the shell to act instead the same as when the terminal is not focused, for example `Ctrl+P` to launch Quick Open.\n\n&nbsp;\n\nMany commands are skipped by default. To override a default and pass that command's keybinding to the shell instead, add the command prefixed with the `-` character. For example add `-workbench.action.quickOpen` to allow `Ctrl+P` to reach the shell.\n\n&nbsp;\n\nThe following list of default skipped commands is truncated when viewed in Settings Editor. To see the full list, {1} and search for the first command from the list below.\n\n&nbsp;\n\nDefault Skipped Commands:\n\n{0}",
 				DEFAULT_COMMANDS_TO_SKIP_SHELL.sort().map(command => `- ${command}`).join('\n'),
 				`[${localize('openDefaultSettingsJson', "open the default settings JSON")}](command:workbench.action.openRawDefaultSettings '${localize('openDefaultSettingsJson.capitalized', "Open Default Settings (JSON)")}')`
 			),
@@ -307,7 +307,7 @@ const terminalConfiguration: IConfigurationNode = {
 			default: []
 		},
 		[TerminalSettingId.AllowChords]: {
-			markdownDescription: localize('terminal.integrated.allowChords', "Whether or not to allow chord keybindings in the terminal. Note that when this is true and the keystroke results in a chord it will bypass `#terminal.integrated.commandsToSkipShell#`, setting this to false is particularly useful when you want ctrl+k to go to your shell (not VS Code)."),
+			markdownDescription: localize('terminal.integrated.allowChords', "Whether or not to allow chord keybindings in the terminal. Note that when this is true and the keystroke results in a chord it will bypass `#terminal.integrated.commandsToSkipShell#`, setting this to false is particularly useful when you want ctrl+k to go to your shell (not VS Colgattium)."),
 			type: 'boolean',
 			default: true
 		},
@@ -318,7 +318,7 @@ const terminalConfiguration: IConfigurationNode = {
 		},
 		[TerminalSettingId.EnvMacOs]: {
 			restricted: true,
-			markdownDescription: localize('terminal.integrated.env.osx', "Object with environment variables that will be added to the VS Code process to be used by the terminal on macOS. Set to `null` to delete the environment variable."),
+			markdownDescription: localize('terminal.integrated.env.osx', "Object with environment variables that will be added to the VS Colgattium process to be used by the terminal on macOS. Set to `null` to delete the environment variable."),
 			type: 'object',
 			additionalProperties: {
 				type: ['string', 'null']
@@ -327,7 +327,7 @@ const terminalConfiguration: IConfigurationNode = {
 		},
 		[TerminalSettingId.EnvLinux]: {
 			restricted: true,
-			markdownDescription: localize('terminal.integrated.env.linux', "Object with environment variables that will be added to the VS Code process to be used by the terminal on Linux. Set to `null` to delete the environment variable."),
+			markdownDescription: localize('terminal.integrated.env.linux', "Object with environment variables that will be added to the VS Colgattium process to be used by the terminal on Linux. Set to `null` to delete the environment variable."),
 			type: 'object',
 			additionalProperties: {
 				type: ['string', 'null']
@@ -336,7 +336,7 @@ const terminalConfiguration: IConfigurationNode = {
 		},
 		[TerminalSettingId.EnvWindows]: {
 			restricted: true,
-			markdownDescription: localize('terminal.integrated.env.windows', "Object with environment variables that will be added to the VS Code process to be used by the terminal on Windows. Set to `null` to delete the environment variable."),
+			markdownDescription: localize('terminal.integrated.env.windows', "Object with environment variables that will be added to the VS Colgattium process to be used by the terminal on Windows. Set to `null` to delete the environment variable."),
 			type: 'object',
 			additionalProperties: {
 				type: ['string', 'null']

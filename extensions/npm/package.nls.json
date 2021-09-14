@@ -1,6 +1,6 @@
 {
 	"description": "Extension to add task support for npm scripts.",
-	"displayName": "NPM support for VS Code",
+	"displayName": "NPM support for VS Colgattium",
 	"workspaceTrust": "This extension executes tasks, which require trust to run.",
 	"config.npm.autoDetect": "Controls whether npm scripts should be automatically detected.",
 	"config.npm.runSilent": "Run npm commands with the `--silent` option.",

@@ -162,7 +162,7 @@ class OpenNewsletterSignupUrlAction extends Action2 {
 	constructor() {
 		super({
 			id: OpenNewsletterSignupUrlAction.ID,
-			title: { value: localize('newsletterSignup', "Signup for the VS Code Newsletter"), original: 'Signup for the VS Code Newsletter' },
+			title: { value: localize('newsletterSignup', "Signup for the VS Colgattium Newsletter"), original: 'Signup for the VS Colgattium Newsletter' },
 			category: CATEGORIES.Help,
 			f1: true
 		});

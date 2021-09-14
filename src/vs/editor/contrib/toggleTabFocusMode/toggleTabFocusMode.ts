@@ -18,7 +18,7 @@ export class ToggleTabFocusModeAction extends EditorAction {
 	constructor() {
 		super({
 			id: ToggleTabFocusModeAction.ID,
-			label: nls.localize({ key: 'toggle.tabMovesFocus', comment: ['Turn on/off use of tab key for moving focus around VS Code'] }, "Toggle Tab Key Moves Focus"),
+			label: nls.localize({ key: 'toggle.tabMovesFocus', comment: ['Turn on/off use of tab key for moving focus around VS Colgattium'] }, "Toggle Tab Key Moves Focus"),
 			alias: 'Toggle Tab Key Moves Focus',
 			precondition: undefined,
 			kbOpts: {

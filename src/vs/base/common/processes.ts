@@ -99,7 +99,7 @@ export interface ProcessItem {
 }
 
 /**
- * Sanitizes a VS Code process environment by removing all Electron/VS Code-related values.
+ * Sanitizes a VS Colgattium process environment by removing all Electron/VS Colgattium-related values.
  */
 export function sanitizeProcessEnvironment(env: IProcessEnvironment, ...preserve: string[]): void {
 	const set = preserve.reduce((set, key) => {

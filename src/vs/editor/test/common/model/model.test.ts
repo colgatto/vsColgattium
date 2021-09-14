@@ -464,7 +464,7 @@ suite('Editor Model - Words', () => {
 		assert.deepStrictEqual(model.getWordAtPosition(new Position(1, 7)), { word: 'ab', startColumn: 7, endColumn: 9 });
 	});
 
-	test('issue #61296: VS code freezes when editing CSS file with emoji', () => {
+	test('issue #61296: VS Colgattium freezes when editing CSS file with emoji', () => {
 		const MODE_ID = new LanguageIdentifier('testMode', 4);
 
 		const mode = new class extends MockMode {

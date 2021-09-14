@@ -105,7 +105,7 @@ export class AdapterManager implements IAdapterManager {
 						},
 						'debugServer': {
 							type: 'number',
-							description: nls.localize('debugServer', "For debug extension development only: if a port is specified VS Code tries to connect to a debug adapter running in server mode"),
+							description: nls.localize('debugServer', "For debug extension development only: if a port is specified VS Colgattium tries to connect to a debug adapter running in server mode"),
 							default: 4711
 						},
 						'preLaunchTask': {

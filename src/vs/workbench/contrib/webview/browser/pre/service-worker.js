@@ -304,7 +304,7 @@ async function processLocalhostRequest(event, requestUrl) {
 	const client = await sw.clients.get(event.clientId);
 	if (!client) {
 		// This is expected when requesting resources on other localhost ports
-		// that are not spawned by vs code
+		// that are not spawned by VS Colgattium
 		return fetch(event.request);
 	}
 	const webviewId = getWebviewIdForClient(client);

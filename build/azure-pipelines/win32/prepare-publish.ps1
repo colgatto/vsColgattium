@@ -6,14 +6,14 @@ $Repo = "$(pwd)"
 $Root = "$Repo\.."
 $SystemExe = "$Repo\.build\win32-$Arch\system-setup\VSCodeSetup.exe"
 $UserExe = "$Repo\.build\win32-$Arch\user-setup\VSCodeSetup.exe"
-$Zip = "$Repo\.build\win32-$Arch\archive\VSCode-win32-$Arch.zip"
+$Zip = "$Repo\.build\win32-$Arch\archive\VSColgattium-win32-$Arch.zip"
 $LegacyServer = "$Root\vscode-reh-win32-$Arch"
 $Server = "$Root\vscode-server-win32-$Arch"
 $ServerZip = "$Repo\.build\vscode-server-win32-$Arch.zip"
 $LegacyWeb = "$Root\vscode-reh-web-win32-$Arch"
 $Web = "$Root\vscode-server-win32-$Arch-web"
 $WebZip = "$Repo\.build\vscode-server-win32-$Arch-web.zip"
-$Build = "$Root\VSCode-win32-$Arch"
+$Build = "$Root\VSColgattium-win32-$Arch"
 
 # Create server archive
 if ("$Arch" -ne "arm64") {
@@ -27,7 +27,7 @@ if ("$Arch" -ne "arm64") {
 $PackageJson = Get-Content -Raw -Path "$Build\resources\app\package.json" | ConvertFrom-Json
 $Version = $PackageJson.version
 
-$ARCHIVE_NAME = "VSCode-win32-$Arch-$Version.zip"
+$ARCHIVE_NAME = "VSColgattium-win32-$Arch-$Version.zip"
 $SYSTEM_SETUP_NAME = "VSCodeSetup-$Arch-$Version.exe"
 $USER_SETUP_NAME = "VSCodeUserSetup-$Arch-$Version.exe"
 

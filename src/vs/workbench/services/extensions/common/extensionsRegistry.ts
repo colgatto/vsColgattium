@@ -165,21 +165,21 @@ export const schema: IJSONSchema = {
 			properties: {
 				'vscode': {
 					type: 'string',
-					description: nls.localize('vscode.extension.engines.vscode', 'For VS Code extensions, specifies the VS Code version that the extension is compatible with. Cannot be *. For example: ^0.10.5 indicates compatibility with a minimum VS Code version of 0.10.5.'),
+					description: nls.localize('vscode.extension.engines.vscode', 'For VS Colgattium extensions, specifies the VS Colgattium version that the extension is compatible with. Cannot be *. For example: ^0.10.5 indicates compatibility with a minimum VS Colgattium version of 0.10.5.'),
 					default: '^1.22.0',
 				}
 			}
 		},
 		publisher: {
-			description: nls.localize('vscode.extension.publisher', 'The publisher of the VS Code extension.'),
+			description: nls.localize('vscode.extension.publisher', 'The publisher of the VS Colgattium extension.'),
 			type: 'string'
 		},
 		displayName: {
-			description: nls.localize('vscode.extension.displayName', 'The display name for the extension used in the VS Code gallery.'),
+			description: nls.localize('vscode.extension.displayName', 'The display name for the extension used in the VS Colgattium gallery.'),
 			type: 'string'
 		},
 		categories: {
-			description: nls.localize('vscode.extension.categories', 'The categories used by the VS Code gallery to categorize the extension.'),
+			description: nls.localize('vscode.extension.categories', 'The categories used by the VS Colgattium gallery to categorize the extension.'),
 			type: 'array',
 			uniqueItems: true,
 			items: {
@@ -196,10 +196,10 @@ export const schema: IJSONSchema = {
 		},
 		galleryBanner: {
 			type: 'object',
-			description: nls.localize('vscode.extension.galleryBanner', 'Banner used in the VS Code marketplace.'),
+			description: nls.localize('vscode.extension.galleryBanner', 'Banner used in the VS Colgattium marketplace.'),
 			properties: {
 				color: {
-					description: nls.localize('vscode.extension.galleryBanner.color', 'The banner color on the VS Code marketplace page header.'),
+					description: nls.localize('vscode.extension.galleryBanner.color', 'The banner color on the VS Colgattium marketplace page header.'),
 					type: 'string'
 				},
 				theme: {
@@ -210,7 +210,7 @@ export const schema: IJSONSchema = {
 			}
 		},
 		contributes: {
-			description: nls.localize('vscode.extension.contributes', 'All contributions of the VS Code extension represented by this package.'),
+			description: nls.localize('vscode.extension.contributes', 'All contributions of the VS Colgattium extension represented by this package.'),
 			type: 'object',
 			properties: {
 				// extensions will fill in
@@ -222,7 +222,7 @@ export const schema: IJSONSchema = {
 			description: nls.localize('vscode.extension.preview', 'Sets the extension to be flagged as a Preview in the Marketplace.'),
 		},
 		activationEvents: {
-			description: nls.localize('vscode.extension.activationEvents', 'Activation events for the VS Code extension.'),
+			description: nls.localize('vscode.extension.activationEvents', 'Activation events for the VS Colgattium extension.'),
 			type: 'array',
 			items: {
 				type: 'string',
@@ -334,7 +334,7 @@ export const schema: IJSONSchema = {
 					},
 					{
 						label: '*',
-						description: nls.localize('vscode.extension.activationEvents.star', 'An activation event emitted on VS Code startup. To ensure a great end user experience, please use this activation event in your extension only when no other activation events combination works in your use-case.'),
+						description: nls.localize('vscode.extension.activationEvents.star', 'An activation event emitted on VS Colgattium startup. To ensure a great end user experience, please use this activation event in your extension only when no other activation events combination works in your use-case.'),
 						body: '*'
 					}
 				],
@@ -493,11 +493,11 @@ export const schema: IJSONSchema = {
 			type: 'object',
 			properties: {
 				'vscode:prepublish': {
-					description: nls.localize('vscode.extension.scripts.prepublish', 'Script executed before the package is published as a VS Code extension.'),
+					description: nls.localize('vscode.extension.scripts.prepublish', 'Script executed before the package is published as a VS Colgattium extension.'),
 					type: 'string'
 				},
 				'vscode:uninstall': {
-					description: nls.localize('vscode.extension.scripts.uninstall', 'Uninstall hook for VS Code extension. Script that gets executed when the extension is completely uninstalled from VS Code which is when VS Code is restarted (shutdown and start) after the extension is uninstalled. Only Node scripts are supported.'),
+					description: nls.localize('vscode.extension.scripts.uninstall', 'Uninstall hook for VS Colgattium extension. Script that gets executed when the extension is completely uninstalled from VS Colgattium which is when VS Colgattium is restarted (shutdown and start) after the extension is uninstalled. Only Node scripts are supported.'),
 					type: 'string'
 				}
 			}

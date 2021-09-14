@@ -246,7 +246,7 @@ export class TitlebarPart extends Part implements ITitleService {
 	 * {rootPath}: e.g. /Users/Development
 	 * {folderName}: e.g. myFolder
 	 * {folderPath}: e.g. /Users/Development/myFolder
-	 * {appName}: e.g. VS Code
+	 * {appName}: e.g. VS Colgattium
 	 * {remoteName}: e.g. SSH
 	 * {dirty}: indicator
 	 * {separator}: conditional separator

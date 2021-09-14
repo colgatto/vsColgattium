@@ -127,7 +127,7 @@ class AccessibilityHelpWidget extends Widget implements IOverlayWidget {
 			}
 
 			if (e.equals(KeyMod.CtrlCmd | KeyCode.KEY_H)) {
-				alert(nls.localize('openingDocs', "Now opening the VS Code Accessibility documentation page."));
+				alert(nls.localize('openingDocs', "Now opening the VS Colgattium Accessibility documentation page."));
 
 				this._openerService.open(URI.parse('https://go.microsoft.com/fwlink/?linkid=851010'));
 
@@ -186,7 +186,7 @@ class AccessibilityHelpWidget extends Widget implements IOverlayWidget {
 
 	private _buildContent() {
 		const options = this._editor.getOptions();
-		let text = nls.localize('introMsg', "Thank you for trying out VS Code's accessibility options.");
+		let text = nls.localize('introMsg', "Thank you for trying out VS Colgattium's accessibility options.");
 
 		text += '\n\n' + nls.localize('status', "Status:");
 
@@ -203,7 +203,7 @@ class AccessibilityHelpWidget extends Widget implements IOverlayWidget {
 			case 'auto':
 				switch (actualValue) {
 					case AccessibilitySupport.Unknown:
-						// Should never happen in VS Code
+						// Should never happen in VS Colgattium
 						text += '\n\n - ' + nls.localize('auto_unknown', "The editor is configured to use platform APIs to detect when a Screen Reader is attached, but the current runtime does not support this.");
 						break;
 					case AccessibilitySupport.Enabled:
@@ -237,8 +237,8 @@ class AccessibilityHelpWidget extends Widget implements IOverlayWidget {
 
 		const openDocMessage = (
 			platform.isMacintosh
-				? nls.localize('openDocMac', "Press Command+H now to open a browser window with more VS Code information related to Accessibility.")
-				: nls.localize('openDocWinLinux', "Press Control+H now to open a browser window with more VS Code information related to Accessibility.")
+				? nls.localize('openDocMac', "Press Command+H now to open a browser window with more VS Colgattium information related to Accessibility.")
+				: nls.localize('openDocWinLinux', "Press Control+H now to open a browser window with more VS Colgattium information related to Accessibility.")
 		);
 
 		text += '\n\n' + openDocMessage;

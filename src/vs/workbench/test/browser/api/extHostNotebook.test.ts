@@ -360,7 +360,7 @@ suite('NotebookCell#Document', function () {
 	});
 
 
-	test('Opening a notebook results in VS Code firing the event onDidChangeActiveNotebookEditor twice #118470', function () {
+	test('Opening a notebook results in VS Colgattium firing the event onDidChangeActiveNotebookEditor twice #118470', function () {
 		let count = 0;
 		extHostNotebooks.onDidChangeActiveNotebookEditor(() => count += 1);
 

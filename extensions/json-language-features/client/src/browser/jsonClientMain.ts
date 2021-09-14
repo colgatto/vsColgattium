@@ -15,7 +15,7 @@ declare const Worker: {
 
 declare function fetch(uri: string, options: any): any;
 
-// this method is called when vs code is activated
+// this method is called when VS Colgattium is activated
 export function activate(context: ExtensionContext) {
 	const serverMain = Uri.joinPath(context.extensionUri, 'server/dist/browser/jsonServerMain.js');
 	try {

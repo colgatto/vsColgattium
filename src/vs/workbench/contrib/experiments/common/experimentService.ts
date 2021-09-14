@@ -89,9 +89,9 @@ interface IExperimentStorageState {
 }
 
 /**
- * Current version of the experiment schema in this VS Code build. This *must*
+ * Current version of the experiment schema in this VS Colgattium build. This *must*
  * be incremented when adding a condition, otherwise experiments might activate
- * on older versions of VS Code where not intended.
+ * on older versions of VS Colgattium where not intended.
  */
 export const currentSchemaVersion = 4;
 

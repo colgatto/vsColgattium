@@ -23,7 +23,7 @@ const state = {
 	...getData<any>('data-state')
 };
 
-// Make sure to sync VS Code state here
+// Make sure to sync VS Colgattium state here
 vscode.setState(state);
 
 const messaging = createPosterForVsCode(vscode);
@@ -190,7 +190,7 @@ document.addEventListener('click', event => {
 				hrefText = node.getAttribute('href');
 			}
 
-			// If original link doesn't look like a url, delegate back to VS Code to resolve
+			// If original link doesn't look like a url, delegate back to VS Colgattium to resolve
 			if (!/^[a-z\-]+:/i.test(hrefText)) {
 				messaging.postMessage('openLink', { href: hrefText });
 				event.preventDefault();
