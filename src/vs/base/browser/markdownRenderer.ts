@@ -9,11 +9,14 @@ import { DomEmitter } from 'vs/base/browser/event';
 import { createElement, FormattedTextRenderOptions } from 'vs/base/browser/formattedTextRenderer';
 import { StandardMouseEvent } from 'vs/base/browser/mouseEvent';
 import { renderLabelWithIcons } from 'vs/base/browser/ui/iconLabel/iconLabels';
+import { raceCancellation } from 'vs/base/common/async';
+import { CancellationTokenSource } from 'vs/base/common/cancellation';
 import { onUnexpectedError } from 'vs/base/common/errors';
 import { Event } from 'vs/base/common/event';
 import { IMarkdownString, parseHrefAndDimensions, removeMarkdownEscapes } from 'vs/base/common/htmlContent';
 import { markdownEscapeEscapedIcons } from 'vs/base/common/iconLabels';
 import { defaultGenerator } from 'vs/base/common/idGenerator';
+import { DisposableStore } from 'vs/base/common/lifecycle';
 import * as marked from 'vs/base/common/marked/marked';
 import { parse } from 'vs/base/common/marshalling';
 import { FileAccess, Schemas } from 'vs/base/common/network';
@@ -27,7 +30,7 @@ export interface MarkedOptions extends marked.MarkedOptions {
 }
 
 export interface MarkdownRenderOptions extends FormattedTextRenderOptions {
-	codeBlockRenderer?: (modeId: string, value: string) => Promise<HTMLElement>;
+	codeBlockRenderer?: (languageId: string, value: string) => Promise<HTMLElement>;
 	asyncRenderCallback?: () => void;
 	baseUrl?: URI;
 }
@@ -38,7 +41,12 @@ export interface MarkdownRenderOptions extends FormattedTextRenderOptions {
  * **Note** that for most cases you should be using [`MarkdownRenderer`](./src/vs/editor/browser/core/markdownRenderer.ts)
  * which comes with support for pretty code block rendering and which uses the default way of handling links.
  */
-export function renderMarkdown(markdown: IMarkdownString, options: MarkdownRenderOptions = {}, markedOptions: MarkedOptions = {}): HTMLElement {
+export function renderMarkdown(markdown: IMarkdownString, options: MarkdownRenderOptions = {}, markedOptions: MarkedOptions = {}): { element: HTMLElement, dispose: () => void } {
+	const disposables = new DisposableStore();
+	let isDisposed = false;
+
+	const cts = disposables.add(new CancellationTokenSource());
+
 	const element = createElement(options);
 
 	const _uriMassage = function (part: string): string {
@@ -63,19 +71,22 @@ export function renderMarkdown(markdown: IMarkdownString, options: MarkdownRende
 
 	const _href = function (href: string, isDomUri: boolean): string {
 		const data = markdown.uris && markdown.uris[href];
-		if (!data) {
-			return href; // no uri exists
-		}
 		let uri = URI.revive(data);
 		if (isDomUri) {
 			if (href.startsWith(Schemas.data + ':')) {
 				return href;
+			}
+			if (!uri) {
+				uri = URI.parse(href);
 			}
 			// this URI will end up as "src"-attribute of a dom node
 			// and because of that special rewriting needs to be done
 			// so that the URI uses a protocol that's understood by
 			// browsers (like http or https)
 			return FileAccess.asBrowserUri(uri).toString(true);
+		}
+		if (!uri) {
+			return href;
 		}
 		if (URI.parse(href).toString() === uri.toString()) {
 			return href; // no transformation performed
@@ -92,19 +103,12 @@ export function renderMarkdown(markdown: IMarkdownString, options: MarkdownRende
 	const withInnerHTML = new Promise<void>(c => signalInnerHTML = c);
 
 	const renderer = new marked.Renderer();
+
 	renderer.image = (href: string, title: string, text: string) => {
 		let dimensions: string[] = [];
 		let attributes: string[] = [];
 		if (href) {
 			({ href, dimensions } = parseHrefAndDimensions(href));
-			href = _href(href, true);
-			try {
-				const hrefAsUri = URI.parse(href);
-				if (options.baseUrl && hrefAsUri.scheme === Schemas.file) { // absolute or relative local path, or file: uri
-					href = resolvePath(options.baseUrl, href).toString();
-				}
-			} catch (err) { }
-
 			attributes.push(`src="${href}"`);
 		}
 		if (text) {
@@ -148,14 +152,10 @@ export function renderMarkdown(markdown: IMarkdownString, options: MarkdownRende
 				.replace(/>/g, '&gt;')
 				.replace(/"/g, '&quot;')
 				.replace(/'/g, '&#39;');
-			return `<a href="#" data-href="${href}" title="${title || href}">${text}</a>`;
+			return `<a data-href="${href}" title="${title || href}">${text}</a>`;
 		}
 	};
 	renderer.paragraph = (text): string => {
-		if (markdown.supportThemeIcons) {
-			const elements = renderLabelWithIcons(text);
-			text = elements.map(e => typeof e === 'string' ? e : e.outerHTML).join('');
-		}
 		return `<p>${text}</p>`;
 	};
 
@@ -165,18 +165,17 @@ export function renderMarkdown(markdown: IMarkdownString, options: MarkdownRende
 			// when code-block rendering is async we return sync
 			// but update the node with the real result later.
 			const id = defaultGenerator.nextId();
-			const promise = Promise.all([value, withInnerHTML]).then(values => {
-				const span = <HTMLDivElement>element.querySelector(`div[data-code="${id}"]`);
-				if (span) {
-					DOM.reset(span, values[0]);
+			raceCancellation(Promise.all([value, withInnerHTML]), cts.token).then(values => {
+				if (!isDisposed && values) {
+					const span = <HTMLDivElement>element.querySelector(`div[data-code="${id}"]`);
+					if (span) {
+						DOM.reset(span, values[0]);
+					}
+					options.asyncRenderCallback?.();
 				}
-			}).catch(_err => {
+			}).catch(() => {
 				// ignore
 			});
-
-			if (options.asyncRenderCallback) {
-				promise.then(options.asyncRenderCallback);
-			}
 
 			return `<div class="code" data-code="${id}">${escape(code)}</div>`;
 		};
@@ -239,8 +238,34 @@ export function renderMarkdown(markdown: IMarkdownString, options: MarkdownRende
 		value = markdownEscapeEscapedIcons(value);
 	}
 
-	const renderedMarkdown = marked.parse(value, markedOptions);
-	element.innerHTML = sanitizeRenderedMarkdown(markdown, renderedMarkdown) as unknown as string;
+	let renderedMarkdown = marked.parse(value, markedOptions);
+
+	// Rewrite theme icons
+	if (markdown.supportThemeIcons) {
+		const elements = renderLabelWithIcons(renderedMarkdown);
+		renderedMarkdown = elements.map(e => typeof e === 'string' ? e : e.outerHTML).join('');
+	}
+
+	const htmlParser = new DOMParser();
+	const markdownHtmlDoc = htmlParser.parseFromString(sanitizeRenderedMarkdown(markdown, renderedMarkdown) as unknown as string, 'text/html');
+
+	markdownHtmlDoc.body.querySelectorAll('img')
+		.forEach(img => {
+			if (img.src) {
+				let href = _href(img.src, true);
+
+				try {
+					const hrefAsUri = URI.parse(href);
+					if (options.baseUrl && hrefAsUri.scheme === Schemas.file) { // absolute or relative local path, or file: uri
+						href = resolvePath(options.baseUrl, href).toString();
+					}
+				} catch (err) { }
+
+				img.src = href;
+			}
+		});
+
+	element.innerHTML = sanitizeRenderedMarkdown(markdown, markdownHtmlDoc.body.innerHTML) as unknown as string;
 
 	// signal that async code blocks can be now be inserted
 	signalInnerHTML!();
@@ -248,15 +273,21 @@ export function renderMarkdown(markdown: IMarkdownString, options: MarkdownRende
 	// signal size changes for image tags
 	if (options.asyncRenderCallback) {
 		for (const img of element.getElementsByTagName('img')) {
-			const listener = DOM.addDisposableListener(img, 'load', () => {
+			const listener = disposables.add(DOM.addDisposableListener(img, 'load', () => {
 				listener.dispose();
 				options.asyncRenderCallback!();
-			});
+			}));
 		}
 	}
 
-
-	return element;
+	return {
+		element,
+		dispose: () => {
+			isDisposed = true;
+			cts.cancel();
+			disposables.dispose();
+		}
+	};
 }
 
 function sanitizeRenderedMarkdown(

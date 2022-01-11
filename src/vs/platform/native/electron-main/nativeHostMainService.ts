@@ -72,10 +72,7 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
 
 		// Color Scheme changes
 		nativeTheme.on('updated', () => {
-			this._onDidChangeColorScheme.fire({
-				highContrast: nativeTheme.shouldUseInvertedColorScheme || nativeTheme.shouldUseHighContrastColors,
-				dark: nativeTheme.shouldUseDarkColors
-			});
+			this._onDidChangeColorScheme.fire(this.osColorScheme);
 		});
 	}
 
@@ -326,7 +323,7 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
 			await Promises.unlink(source);
 		} catch (error) {
 			switch (error.code) {
-				case 'EACCES':
+				case 'EACCES': {
 					const { response } = await this.showMessageBox(windowId, {
 						title: this.productService.nameLong,
 						type: 'info',
@@ -349,6 +346,7 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
 						}
 					}
 					break;
+				}
 				case 'ENOENT':
 					break; // ignore file not found
 				default:
@@ -512,7 +510,7 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
 	}
 
 	async writeElevated(windowId: number | undefined, source: URI, target: URI, options?: { unlock?: boolean }): Promise<void> {
-		const sudoPrompt = await import('sudo-prompt');
+		const sudoPrompt = await import('@vscode/sudo-prompt');
 
 		return new Promise<void>((resolve, reject) => {
 			const sudoCommand: string[] = [`"${this.cliPath}"`];
@@ -596,6 +594,18 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
 		return virtualMachineHint.value();
 	}
 
+	private get osColorScheme(): IColorScheme {
+		return {
+			highContrast: nativeTheme.shouldUseInvertedColorScheme || nativeTheme.shouldUseHighContrastColors,
+			dark: nativeTheme.shouldUseDarkColors
+		};
+	}
+
+	public async getOSColorScheme(): Promise<IColorScheme> {
+		return this.osColorScheme;
+	}
+
+
 	//#endregion
 
 
@@ -644,7 +654,13 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
 	//#region macOS Touchbar
 
 	async newWindowTab(): Promise<void> {
-		this.windowsMainService.open({ context: OpenContext.API, cli: this.environmentMainService.args, forceNewTabbedWindow: true, forceEmpty: true, remoteAuthority: this.environmentMainService.args.remote || undefined });
+		this.windowsMainService.open({
+			context: OpenContext.API,
+			cli: this.environmentMainService.args,
+			forceNewTabbedWindow: true,
+			forceEmpty: true,
+			remoteAuthority: this.environmentMainService.args.remote || undefined
+		});
 	}
 
 	async showPreviousWindowTab(): Promise<void> {
@@ -800,7 +816,7 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
 			return undefined;
 		}
 
-		const Registry = await import('vscode-windows-registry');
+		const Registry = await import('@vscode/windows-registry');
 		try {
 			return Registry.GetStringRegKey(hive, path, name);
 		} catch {

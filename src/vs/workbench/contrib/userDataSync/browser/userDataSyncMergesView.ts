@@ -18,7 +18,7 @@ import { Disposable, dispose } from 'vs/base/common/lifecycle';
 import { Codicon } from 'vs/base/common/codicons';
 import { IUserDataSyncWorkbenchService, getSyncAreaLabel, IUserDataSyncPreview, IUserDataSyncResource, SYNC_MERGES_VIEW_ID } from 'vs/workbench/services/userDataSync/common/userDataSync';
 import { isEqual, basename } from 'vs/base/common/resources';
-import { IDecorationsProvider, IDecorationData, IDecorationsService } from 'vs/workbench/services/decorations/browser/decorations';
+import { IDecorationsProvider, IDecorationData, IDecorationsService } from 'vs/workbench/services/decorations/common/decorations';
 import { IProgressService } from 'vs/platform/progress/common/progress';
 import { listWarningForeground, listDeemphasizedForeground } from 'vs/platform/theme/common/colorRegistry';
 import * as DOM from 'vs/base/browser/dom';
@@ -417,7 +417,7 @@ type AcceptChangesClassification = {
 
 class AcceptChangesContribution extends Disposable implements IEditorContribution {
 
-	static get(editor: ICodeEditor): AcceptChangesContribution {
+	static get(editor: ICodeEditor): AcceptChangesContribution | null {
 		return editor.getContribution<AcceptChangesContribution>(AcceptChangesContribution.ID);
 	}
 
@@ -463,6 +463,10 @@ class AcceptChangesContribution extends Disposable implements IEditorContributio
 		const userDataSyncResource = this.getUserDataSyncResource(model.uri);
 		if (!userDataSyncResource) {
 			return false;
+		}
+
+		if (!this.configurationService.getValue('diffEditor.renderSideBySide')) {
+			return isEqual(userDataSyncResource.merged, model.uri);
 		}
 
 		return true;

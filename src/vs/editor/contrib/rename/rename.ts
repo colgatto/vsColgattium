@@ -21,8 +21,8 @@ import { Range } from 'vs/editor/common/core/range';
 import { IEditorContribution } from 'vs/editor/common/editorCommon';
 import { EditorContextKeys } from 'vs/editor/common/editorContextKeys';
 import { ITextModel } from 'vs/editor/common/model';
-import { Rejection, RenameLocation, RenameProvider, RenameProviderRegistry, WorkspaceEdit } from 'vs/editor/common/modes';
-import { ITextResourceConfigurationService } from 'vs/editor/common/services/textResourceConfigurationService';
+import { Rejection, RenameLocation, RenameProvider, RenameProviderRegistry, WorkspaceEdit } from 'vs/editor/common/languages';
+import { ITextResourceConfigurationService } from 'vs/editor/common/services/textResourceConfiguration';
 import { MessageController } from 'vs/editor/contrib/message/messageController';
 import * as nls from 'vs/nls';
 import { ConfigurationScope, Extensions, IConfigurationRegistry } from 'vs/platform/configuration/common/configurationRegistry';
@@ -124,7 +124,7 @@ class RenameController implements IEditorContribution {
 
 	public static readonly ID = 'editor.contrib.renameController';
 
-	static get(editor: ICodeEditor): RenameController {
+	static get(editor: ICodeEditor): RenameController | null {
 		return editor.getContribution<RenameController>(RenameController.ID);
 	}
 
@@ -173,7 +173,7 @@ class RenameController implements IEditorContribution {
 			this._progressService.showWhile(resolveLocationOperation, 250);
 			loc = await resolveLocationOperation;
 		} catch (e) {
-			MessageController.get(this.editor).showMessage(e || nls.localize('resolveRenameLocationFailed', "An unknown error occurred while resolving rename location"), position);
+			MessageController.get(this.editor)?.showMessage(e || nls.localize('resolveRenameLocationFailed', "An unknown error occurred while resolving rename location"), position);
 			return undefined;
 		}
 
@@ -182,7 +182,7 @@ class RenameController implements IEditorContribution {
 		}
 
 		if (loc.rejectReason) {
-			MessageController.get(this.editor).showMessage(loc.rejectReason, position);
+			MessageController.get(this.editor)?.showMessage(loc.rejectReason, position);
 			return undefined;
 		}
 
@@ -225,6 +225,9 @@ class RenameController implements IEditorContribution {
 				this._notificationService.info(renameResult.rejectReason);
 				return;
 			}
+
+			// collapse selection to active end
+			this.editor.setSelection(Range.fromPositions(this.editor.getSelection().getPosition()));
 
 			this._bulkEditService.apply(ResourceEdit.convert(renameResult), {
 				editor: this.editor,
@@ -355,6 +358,15 @@ registerModelAndPositionCommand('_executeDocumentRenameProvider', function (mode
 	const [newName] = args;
 	assertType(typeof newName === 'string');
 	return rename(model, position, newName);
+});
+
+registerModelAndPositionCommand('_executePrepareRename', async function (model, position) {
+	const skeleton = new RenameSkeleton(model, position);
+	const loc = await skeleton.resolveRenameLocation(CancellationToken.None);
+	if (loc?.rejectReason) {
+		throw new Error(loc.rejectReason);
+	}
+	return loc;
 });
 
 

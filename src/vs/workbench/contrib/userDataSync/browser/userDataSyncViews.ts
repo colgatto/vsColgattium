@@ -9,7 +9,7 @@ import { localize } from 'vs/nls';
 import { SyncDescriptor } from 'vs/platform/instantiation/common/descriptors';
 import { TreeView, TreeViewPane } from 'vs/workbench/browser/parts/views/treeView';
 import { IInstantiationService, ServicesAccessor } from 'vs/platform/instantiation/common/instantiation';
-import { ALL_SYNC_RESOURCES, SyncResource, IUserDataSyncService, ISyncResourceHandle as IResourceHandle, SyncStatus, IUserDataSyncResourceEnablementService, IUserDataAutoSyncService, UserDataSyncError, UserDataSyncErrorCode, IUserDataAutoSyncEnablementService, getLastSyncResourceUri } from 'vs/platform/userDataSync/common/userDataSync';
+import { ALL_SYNC_RESOURCES, SyncResource, IUserDataSyncService, ISyncResourceHandle as IResourceHandle, SyncStatus, IUserDataSyncEnablementService, IUserDataAutoSyncService, UserDataSyncError, UserDataSyncErrorCode, getLastSyncResourceUri } from 'vs/platform/userDataSync/common/userDataSync';
 import { registerAction2, Action2, MenuId } from 'vs/platform/actions/common/actions';
 import { ContextKeyExpr } from 'vs/platform/contextkey/common/contextkey';
 import { URI } from 'vs/base/common/uri';
@@ -31,15 +31,15 @@ import { basename } from 'vs/base/common/resources';
 import { API_OPEN_DIFF_EDITOR_COMMAND_ID, API_OPEN_EDITOR_COMMAND_ID } from 'vs/workbench/browser/parts/editor/editorCommands';
 import { IFileService } from 'vs/platform/files/common/files';
 import { IEnvironmentService } from 'vs/platform/environment/common/environment';
-import { IUriIdentityService } from 'vs/workbench/services/uriIdentity/common/uriIdentity';
+import { IUriIdentityService } from 'vs/platform/uriIdentity/common/uriIdentity';
+import { ICommandService } from 'vs/platform/commands/common/commands';
 
 export class UserDataSyncDataViews extends Disposable {
 
 	constructor(
 		container: ViewContainer,
 		@IInstantiationService private readonly instantiationService: IInstantiationService,
-		@IUserDataAutoSyncEnablementService private readonly userDataAutoSyncEnablementService: IUserDataAutoSyncEnablementService,
-		@IUserDataSyncResourceEnablementService private readonly userDataSyncResourceEnablementService: IUserDataSyncResourceEnablementService,
+		@IUserDataSyncEnablementService private readonly userDataSyncEnablementService: IUserDataSyncEnablementService,
 		@IUserDataSyncMachinesService private readonly userDataSyncMachinesService: IUserDataSyncMachinesService,
 		@IUserDataSyncService private readonly userDataSyncService: IUserDataSyncService,
 	) {
@@ -153,8 +153,8 @@ export class UserDataSyncDataViews extends Disposable {
 					: this.instantiationService.createInstance(LocalUserDataSyncActivityViewDataProvider);
 			}
 		});
-		this._register(Event.any(this.userDataSyncResourceEnablementService.onDidChangeResourceEnablement,
-			this.userDataAutoSyncEnablementService.onDidChangeEnablement,
+		this._register(Event.any(this.userDataSyncEnablementService.onDidChangeResourceEnablement,
+			this.userDataSyncEnablementService.onDidChangeEnablement,
 			this.userDataSyncService.onDidResetLocal,
 			this.userDataSyncService.onDidResetRemote)(() => treeView.refresh()));
 		const viewsRegistry = Registry.as<IViewsRegistry>(Extensions.ViewsRegistry);
@@ -190,6 +190,31 @@ export class UserDataSyncDataViews extends Disposable {
 				const { resource } = <{ resource: string }>JSON.parse(handle.$treeItemHandle);
 				const editorService = accessor.get(IEditorService);
 				await editorService.openEditor({ resource: URI.parse(resource), options: { pinned: true } });
+			}
+		});
+
+		registerAction2(class extends Action2 {
+			constructor() {
+				super({
+					id: `workbench.actions.sync.compareWithLocal`,
+					title: localize('workbench.actions.sync.compareWithLocal', "Compare with Local"),
+					menu: {
+						id: MenuId.ViewItemContext,
+						when: ContextKeyExpr.and(ContextKeyExpr.equals('view', viewId), ContextKeyExpr.regex('viewItem', /sync-associatedResource-.*/i))
+					},
+				});
+			}
+			async run(accessor: ServicesAccessor, handle: TreeViewItemHandleArg): Promise<void> {
+				const commandService = accessor.get(ICommandService);
+				const { resource, comparableResource } = <{ resource: string, comparableResource: string }>JSON.parse(handle.$treeItemHandle);
+				const remoteResource = URI.parse(resource);
+				const localResource = URI.parse(comparableResource);
+				return commandService.executeCommand(API_OPEN_DIFF_EDITOR_COMMAND_ID,
+					remoteResource,
+					localResource,
+					localize('remoteToLocalDiff', "{0} ↔ {1}", localize({ key: 'leftResourceName', comment: ['remote as in file in cloud'] }, "{0} (Remote)", basename(remoteResource)), localize({ key: 'rightResourceName', comment: ['local as in file in disk'] }, "{0} (Local)", basename(localResource))),
+					undefined
+				);
 			}
 		});
 
@@ -254,7 +279,8 @@ export class UserDataSyncDataViews extends Disposable {
 }
 
 interface ISyncResourceHandle extends IResourceHandle {
-	syncResource: SyncResource
+	syncResource: SyncResource;
+	previous?: IResourceHandle;
 }
 
 interface SyncResourceHandleTreeItem extends ITreeItem {
@@ -322,17 +348,31 @@ abstract class UserDataSyncActivityViewDataProvider implements ITreeViewDataProv
 	}
 
 	protected async getChildrenForSyncResourceTreeItem(element: SyncResourceHandleTreeItem): Promise<ITreeItem[]> {
-		const associatedResources = await this.userDataSyncService.getAssociatedResources((<SyncResourceHandleTreeItem>element).syncResourceHandle.syncResource, (<SyncResourceHandleTreeItem>element).syncResourceHandle);
+		const syncResourceHandle = (<SyncResourceHandleTreeItem>element).syncResourceHandle;
+		const associatedResources = await this.userDataSyncService.getAssociatedResources(syncResourceHandle.syncResource, syncResourceHandle);
+		const previousAssociatedResources = syncResourceHandle.previous ? await this.userDataSyncService.getAssociatedResources(syncResourceHandle.syncResource, syncResourceHandle.previous) : [];
 		return associatedResources.map(({ resource, comparableResource }) => {
 			const handle = JSON.stringify({ resource: resource.toString(), comparableResource: comparableResource.toString() });
-			const leftResourceName = localize({ key: 'leftResourceName', comment: ['remote as in file in cloud'] }, "{0} (Remote)", basename(resource));
-			const rightResourceName = localize({ key: 'rightResourceName', comment: ['local as in file in disk'] }, "{0} (Local)", basename(comparableResource));
+			const previousResource = previousAssociatedResources.find(previous => basename(previous.resource) === basename(resource))?.resource;
 			return {
 				handle,
 				collapsibleState: TreeItemCollapsibleState.None,
 				resourceUri: resource,
-				command: { id: API_OPEN_DIFF_EDITOR_COMMAND_ID, title: '', arguments: [resource, comparableResource, localize('sideBySideLabels', "{0} ↔ {1}", leftResourceName, rightResourceName), undefined] },
-				contextValue: `sync-associatedResource-${(<SyncResourceHandleTreeItem>element).syncResourceHandle.syncResource}`
+				command: previousResource ? {
+					id: API_OPEN_DIFF_EDITOR_COMMAND_ID,
+					title: '',
+					arguments: [
+						previousResource,
+						resource,
+						localize('sideBySideLabels', "{0} ↔ {1}", `${basename(resource)} (${fromNow(syncResourceHandle.previous!.created, true)})`, `${basename(resource)} (${fromNow(syncResourceHandle.created, true)})`),
+						undefined
+					]
+				} : {
+					id: API_OPEN_EDITOR_COMMAND_ID,
+					title: '',
+					arguments: [resource, undefined, undefined]
+				},
+				contextValue: `sync-associatedResource-${syncResourceHandle.syncResource}`
 			};
 		});
 	}
@@ -341,7 +381,8 @@ abstract class UserDataSyncActivityViewDataProvider implements ITreeViewDataProv
 		if (this.syncResourceHandlesPromise === undefined) {
 			this.syncResourceHandlesPromise = Promise.all(ALL_SYNC_RESOURCES.map(async syncResource => {
 				const resourceHandles = await this.getResourceHandles(syncResource);
-				return resourceHandles.map(resourceHandle => ({ ...resourceHandle, syncResource }));
+				resourceHandles.sort((a, b) => b.created - a.created);
+				return resourceHandles.map((resourceHandle, index) => ({ ...resourceHandle, syncResource, previous: resourceHandles[index + 1] }));
 			})).then(result => flatten(result).sort((a, b) => b.created - a.created));
 		}
 		return this.syncResourceHandlesPromise;

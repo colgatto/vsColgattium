@@ -9,7 +9,8 @@ import { IMouseWheelEvent } from 'vs/base/browser/mouseEvent';
 import { ActionViewItem } from 'vs/base/browser/ui/actionbar/actionViewItems';
 import { IAnchor } from 'vs/base/browser/ui/contextview/contextview';
 import { IAction, Separator, SubmenuAction } from 'vs/base/common/actions';
-import { KeyCode, KeyMod, ResolvedKeybinding } from 'vs/base/common/keyCodes';
+import { KeyCode, KeyMod } from 'vs/base/common/keyCodes';
+import { ResolvedKeybinding } from 'vs/base/common/keybindings';
 import { DisposableStore } from 'vs/base/common/lifecycle';
 import { isIOS } from 'vs/base/common/platform';
 import { ICodeEditor, IEditorMouseEvent, MouseTargetType } from 'vs/editor/browser/editorBrowser';
@@ -29,7 +30,7 @@ export class ContextMenuController implements IEditorContribution {
 
 	public static readonly ID = 'editor.contrib.contextmenu';
 
-	public static get(editor: ICodeEditor): ContextMenuController {
+	public static get(editor: ICodeEditor): ContextMenuController | null {
 		return editor.getContribution<ContextMenuController>(ContextMenuController.ID);
 	}
 
@@ -86,6 +87,9 @@ export class ContextMenuController implements IEditorContribution {
 
 		if (e.target.type === MouseTargetType.OVERLAY_WIDGET) {
 			return; // allow native menu on widgets to support right click on input field for example in find
+		}
+		if (e.target.type === MouseTargetType.CONTENT_TEXT && e.target.detail.injectedText) {
+			return; // allow native menu on injected text
 		}
 
 		e.event.preventDefault();
@@ -280,8 +284,7 @@ class ShowContextMenu extends EditorAction {
 	}
 
 	public run(accessor: ServicesAccessor, editor: ICodeEditor): void {
-		let contribution = ContextMenuController.get(editor);
-		contribution.showContextMenu();
+		ContextMenuController.get(editor)?.showContextMenu();
 	}
 }
 

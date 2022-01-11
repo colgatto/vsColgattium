@@ -9,6 +9,8 @@ import { ServicesAccessor } from 'vs/platform/instantiation/common/instantiation
 import { CATEGORIES } from 'vs/workbench/common/actions';
 import { getNotebookEditorFromEditorPane, ICellViewModel, INotebookEditor, INotebookEditorContribution } from 'vs/workbench/contrib/notebook/browser/notebookBrowser';
 import { registerNotebookContribution } from 'vs/workbench/contrib/notebook/browser/notebookEditorExtensions';
+import { NotebookEditorWidget } from 'vs/workbench/contrib/notebook/browser/notebookEditorWidget';
+import { INotebookService } from 'vs/workbench/contrib/notebook/common/notebookService';
 import { IEditorService } from 'vs/workbench/services/editor/common/editorService';
 
 export class TroubleshootController extends Disposable implements INotebookEditorContribution {
@@ -41,7 +43,7 @@ export class TroubleshootController extends Disposable implements INotebookEdito
 
 	private _log(cell: ICellViewModel, e: any) {
 		if (this._logging) {
-			const oldHeight = this._notebookEditor.getViewHeight(cell);
+			const oldHeight = (this._notebookEditor as NotebookEditorWidget).getViewHeight(cell);
 			console.log(`cell#${cell.handle}`, e, `${oldHeight} -> ${cell.layoutInfo.totalHeight}`);
 		}
 	}
@@ -126,5 +128,21 @@ registerAction2(class extends Action2 {
 			const cell = editor.cellAt(i);
 			console.log(`cell#${cell.handle}`, cell.layoutInfo);
 		}
+	}
+});
+
+registerAction2(class extends Action2 {
+	constructor() {
+		super({
+			id: 'notebook.clearNotebookEdtitorTypeCache',
+			title: 'Clear Notebook Editor Cache',
+			category: CATEGORIES.Developer,
+			f1: true
+		});
+	}
+
+	async run(accessor: ServicesAccessor): Promise<void> {
+		const notebookService = accessor.get(INotebookService);
+		notebookService.clearEditorCache();
 	}
 });

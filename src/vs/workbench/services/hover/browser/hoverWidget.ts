@@ -405,7 +405,7 @@ export class HoverWidget extends Widget {
 
 		switch (this._hoverPosition) {
 			case HoverPosition.LEFT:
-			case HoverPosition.RIGHT:
+			case HoverPosition.RIGHT: {
 				this._hoverPointer.classList.add(this._hoverPosition === HoverPosition.LEFT ? 'right' : 'left');
 				const hoverHeight = this._hover.containerDomNode.clientHeight;
 
@@ -420,8 +420,9 @@ export class HoverWidget extends Widget {
 				}
 
 				break;
+			}
 			case HoverPosition.ABOVE:
-			case HoverPosition.BELOW:
+			case HoverPosition.BELOW: {
 				this._hoverPointer.classList.add(this._hoverPosition === HoverPosition.ABOVE ? 'bottom' : 'top');
 				const hoverWidth = this._hover.containerDomNode.clientWidth;
 
@@ -436,6 +437,7 @@ export class HoverWidget extends Widget {
 
 				this._hoverPointer.style.left = `${pointerLeftPosition}px`;
 				break;
+			}
 		}
 	}
 
@@ -463,7 +465,7 @@ class CompositeMouseTracker extends Widget {
 	private _isMouseIn: boolean = false;
 	private _mouseTimeout: number | undefined;
 
-	private readonly _onMouseOut = new Emitter<void>();
+	private readonly _onMouseOut = this._register(new Emitter<void>());
 	get onMouseOut(): Event<void> { return this._onMouseOut.event; }
 
 	constructor(

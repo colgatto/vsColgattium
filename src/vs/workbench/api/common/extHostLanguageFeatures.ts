@@ -7,9 +7,9 @@ import { URI, UriComponents } from 'vs/base/common/uri';
 import { mixin } from 'vs/base/common/objects';
 import type * as vscode from 'vscode';
 import * as typeConvert from 'vs/workbench/api/common/extHostTypeConverters';
-import { Range, Disposable, CompletionList, SnippetString, CodeActionKind, SymbolInformation, DocumentSymbol, SemanticTokensEdits, SemanticTokens, SemanticTokensEdit } from 'vs/workbench/api/common/extHostTypes';
+import { Range, Disposable, CompletionList, SnippetString, CodeActionKind, SymbolInformation, DocumentSymbol, SemanticTokensEdits, SemanticTokens, SemanticTokensEdit, InlayHintKind, Location } from 'vs/workbench/api/common/extHostTypes';
 import { ISingleEditOperation } from 'vs/editor/common/model';
-import * as modes from 'vs/editor/common/modes';
+import * as modes from 'vs/editor/common/languages';
 import { ExtHostDocuments } from 'vs/workbench/api/common/extHostDocuments';
 import { ExtHostCommands, CommandsConverter } from 'vs/workbench/api/common/extHostCommands';
 import { ExtHostDiagnostics } from 'vs/workbench/api/common/extHostDiagnostics';
@@ -17,7 +17,7 @@ import * as extHostProtocol from './extHost.protocol';
 import { regExpLeadsToEndlessLoop, regExpFlags } from 'vs/base/common/strings';
 import { IPosition } from 'vs/editor/common/core/position';
 import { IRange, Range as EditorRange } from 'vs/editor/common/core/range';
-import { isFalsyOrEmpty, isNonEmptyArray, coalesce, asArray } from 'vs/base/common/arrays';
+import { isFalsyOrEmpty, isNonEmptyArray, coalesce } from 'vs/base/common/arrays';
 import { isArray, isObject } from 'vs/base/common/types';
 import { ISelection, Selection } from 'vs/editor/common/core/selection';
 import { ILogService } from 'vs/platform/log/common/log';
@@ -1042,7 +1042,9 @@ class InlineCompletionAdapter {
 				context.selectedSuggestionInfo
 					? {
 						range: typeConvert.Range.to(context.selectedSuggestionInfo.range),
-						text: context.selectedSuggestionInfo.text
+						text: context.selectedSuggestionInfo.text,
+						isSnippetText: context.selectedSuggestionInfo.isSnippetText,
+						completionKind: typeConvert.CompletionItemKind.to(context.selectedSuggestionInfo.completionKind),
 					}
 					: undefined,
 			triggerKind: context.triggerKind
@@ -1169,15 +1171,107 @@ class SignatureHelpAdapter {
 }
 
 class InlayHintsAdapter {
+
+	private _cache = new Cache<vscode.InlayHint>('InlayHints');
+	private readonly _disposables = new Map<number, DisposableStore>();
+
 	constructor(
 		private readonly _documents: ExtHostDocuments,
+		private readonly _commands: CommandsConverter,
 		private readonly _provider: vscode.InlayHintsProvider,
 	) { }
 
 	async provideInlayHints(resource: URI, range: IRange, token: CancellationToken): Promise<extHostProtocol.IInlayHintsDto | undefined> {
 		const doc = this._documents.getDocument(resource);
-		const value = await this._provider.provideInlayHints(doc, typeConvert.Range.to(range), token);
-		return value ? { hints: value.map(typeConvert.InlayHint.from) } : undefined;
+
+		const hints = await this._provider.provideInlayHints(doc, typeConvert.Range.to(range), token);
+		if (!Array.isArray(hints) || hints.length === 0) {
+			// bad result
+			return undefined;
+		}
+		if (token.isCancellationRequested) {
+			// cancelled -> return without further ado, esp no caching
+			// of results as they will leak
+			return undefined;
+		}
+		const pid = this._cache.add(hints);
+		this._disposables.set(pid, new DisposableStore());
+		const result: extHostProtocol.IInlayHintsDto = { hints: [], cacheId: pid };
+		for (let i = 0; i < hints.length; i++) {
+			if (this._isValidInlayHint(hints[i])) {
+				result.hints.push(this._convertInlayHint(hints[i], [pid, i]));
+			}
+		}
+		return result;
+	}
+
+	async resolveInlayHint(id: extHostProtocol.ChainedCacheId, token: CancellationToken) {
+		if (typeof this._provider.resolveInlayHint !== 'function') {
+			return undefined;
+		}
+		const item = this._cache.get(...id);
+		if (!item) {
+			return undefined;
+		}
+		const hint = await this._provider.resolveInlayHint!(item, token);
+		if (!hint) {
+			return undefined;
+		}
+		if (token.isCancellationRequested) {
+			return undefined;
+		}
+		if (!this._isValidInlayHint(hint)) {
+			return undefined;
+		}
+		return this._convertInlayHint(hint, id);
+	}
+
+	releaseHints(id: number): any {
+		this._disposables.get(id)?.dispose();
+		this._disposables.delete(id);
+		this._cache.delete(id);
+	}
+
+	private _isValidInlayHint(hint: vscode.InlayHint): boolean {
+		if (hint.label.length === 0 || Array.isArray(hint.label) && hint.label.every(part => part.label.length === 0)) {
+			console.log('INVALID inlay hint, empty label', hint);
+			return false;
+		}
+		return true;
+	}
+
+	private _convertInlayHint(hint: vscode.InlayHint, id: extHostProtocol.ChainedCacheId): extHostProtocol.IInlayHintDto {
+
+		const disposables = this._disposables.get(id[0]);
+		if (!disposables) {
+			throw Error('DisposableStore is missing...');
+		}
+
+		const result: extHostProtocol.IInlayHintDto = {
+			label: '', // fill-in below
+			cacheId: id,
+			tooltip: hint.tooltip && typeConvert.MarkdownString.from(hint.tooltip),
+			position: typeConvert.Position.from(hint.position),
+			kind: typeConvert.InlayHintKind.from(hint.kind ?? InlayHintKind.Other),
+			whitespaceBefore: hint.whitespaceBefore,
+			whitespaceAfter: hint.whitespaceAfter,
+		};
+
+		if (typeof hint.label === 'string') {
+			result.label = hint.label;
+		} else {
+			result.label = hint.label.map(part => {
+				let r: modes.InlayHintLabelPart = { label: part.label };
+				r.collapsible = part.collapsible;
+				if (Location.isLocation(part.action)) {
+					r.action = typeConvert.location.from(part.action);
+				} else if (part.action) {
+					r.action = this._commands.toInternal(part.action, disposables);
+				}
+				return r;
+			});
+		}
+		return result;
 	}
 }
 
@@ -1522,7 +1616,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
 
 	private static _handlePool: number = 0;
 
-	private readonly _uriTransformer: IURITransformer | null;
+	private readonly _uriTransformer: IURITransformer;
 	private readonly _proxy: extHostProtocol.MainThreadLanguageFeaturesShape;
 	private _documents: ExtHostDocuments;
 	private _commands: ExtHostCommands;
@@ -1533,7 +1627,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
 
 	constructor(
 		mainContext: extHostProtocol.IMainContext,
-		uriTransformer: IURITransformer | null,
+		uriTransformer: IURITransformer,
 		documents: ExtHostDocuments,
 		commands: ExtHostCommands,
 		diagnostics: ExtHostDiagnostics,
@@ -1550,35 +1644,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
 	}
 
 	private _transformDocumentSelector(selector: vscode.DocumentSelector): Array<extHostProtocol.IDocumentFilterDto> {
-		return coalesce(asArray(selector).map(sel => this._doTransformDocumentSelector(sel)));
-	}
-
-	private _doTransformDocumentSelector(selector: string | vscode.DocumentFilter): extHostProtocol.IDocumentFilterDto | undefined {
-		if (typeof selector === 'string') {
-			return {
-				$serialized: true,
-				language: selector
-			};
-		}
-
-		if (selector) {
-			return {
-				$serialized: true,
-				language: selector.language,
-				scheme: this._transformScheme(selector.scheme),
-				pattern: typeof selector.pattern === 'undefined' ? undefined : typeConvert.GlobPattern.from(selector.pattern),
-				exclusive: selector.exclusive
-			};
-		}
-
-		return undefined;
-	}
-
-	private _transformScheme(scheme: string | undefined): string | undefined {
-		if (this._uriTransformer && typeof scheme === 'string') {
-			return this._uriTransformer.transformOutgoingScheme(scheme);
-		}
-		return scheme;
+		return typeConvert.DocumentSelector.from(selector, this._uriTransformer);
 	}
 
 	private _createDisposable(handle: number): Disposable {
@@ -1873,7 +1939,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
 
 	registerWorkspaceSymbolProvider(extension: IExtensionDescription, provider: vscode.WorkspaceSymbolProvider): vscode.Disposable {
 		const handle = this._addNewAdapter(new NavigateTypeAdapter(provider, this._logService), extension);
-		this._proxy.$registerNavigateTypeSupport(handle);
+		this._proxy.$registerNavigateTypeSupport(handle, typeof provider.resolveWorkspaceSymbol === 'function');
 		return this._createDisposable(handle);
 	}
 
@@ -2010,13 +2076,13 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
 	registerInlayHintsProvider(extension: IExtensionDescription, selector: vscode.DocumentSelector, provider: vscode.InlayHintsProvider): vscode.Disposable {
 
 		const eventHandle = typeof provider.onDidChangeInlayHints === 'function' ? this._nextHandle() : undefined;
-		const handle = this._addNewAdapter(new InlayHintsAdapter(this._documents, provider), extension);
+		const handle = this._addNewAdapter(new InlayHintsAdapter(this._documents, this._commands.converter, provider), extension);
 
-		this._proxy.$registerInlayHintsProvider(handle, this._transformDocumentSelector(selector), eventHandle);
+		this._proxy.$registerInlayHintsProvider(handle, this._transformDocumentSelector(selector), typeof provider.resolveInlayHint === 'function', eventHandle);
 		let result = this._createDisposable(handle);
 
 		if (eventHandle !== undefined) {
-			const subscription = provider.onDidChangeInlayHints!(_ => this._proxy.$emitInlayHintsEvent(eventHandle));
+			const subscription = provider.onDidChangeInlayHints!(uri => this._proxy.$emitInlayHintsEvent(eventHandle));
 			result = Disposable.from(result, subscription);
 		}
 		return result;
@@ -2024,6 +2090,14 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
 
 	$provideInlayHints(handle: number, resource: UriComponents, range: IRange, token: CancellationToken): Promise<extHostProtocol.IInlayHintsDto | undefined> {
 		return this._withAdapter(handle, InlayHintsAdapter, adapter => adapter.provideInlayHints(URI.revive(resource), range, token), undefined);
+	}
+
+	$resolveInlayHint(handle: number, id: extHostProtocol.ChainedCacheId, token: CancellationToken): Promise<extHostProtocol.IInlayHintDto | undefined> {
+		return this._withAdapter(handle, InlayHintsAdapter, adapter => adapter.resolveInlayHint(id, token), undefined);
+	}
+
+	$releaseInlayHints(handle: number, id: number): void {
+		this._withAdapter(handle, InlayHintsAdapter, adapter => adapter.releaseHints(id), undefined);
 	}
 
 	// --- links

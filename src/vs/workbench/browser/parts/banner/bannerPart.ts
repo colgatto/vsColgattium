@@ -7,11 +7,11 @@ import 'vs/css!./media/bannerpart';
 import { localize } from 'vs/nls';
 import { $, addDisposableListener, append, asCSSUrl, clearNode, EventType } from 'vs/base/browser/dom';
 import { ActionBar } from 'vs/base/browser/ui/actionbar/actionbar';
-import { Codicon, registerCodicon } from 'vs/base/common/codicons';
+import { Codicon } from 'vs/base/common/codicons';
 import { registerSingleton } from 'vs/platform/instantiation/common/extensions';
 import { IInstantiationService, ServicesAccessor } from 'vs/platform/instantiation/common/instantiation';
 import { IStorageService } from 'vs/platform/storage/common/storage';
-import { IThemeService, registerThemingParticipant } from 'vs/platform/theme/common/themeService';
+import { IThemeService, registerThemingParticipant, ThemeIcon } from 'vs/platform/theme/common/themeService';
 import { Part } from 'vs/workbench/browser/part';
 import { IWorkbenchLayoutService, Parts } from 'vs/workbench/services/layout/browser/layoutService';
 import { Action } from 'vs/base/common/actions';
@@ -27,12 +27,7 @@ import { KeybindingsRegistry, KeybindingWeight } from 'vs/platform/keybinding/co
 import { KeyCode } from 'vs/base/common/keyCodes';
 import { IContextKeyService, RawContextKey } from 'vs/platform/contextkey/common/contextkey';
 import { URI } from 'vs/base/common/uri';
-
-
-// Icons
-
-const bannerCloseIcon = registerCodicon('banner-close', Codicon.close);
-
+import { widgetClose } from 'vs/platform/theme/common/iconRegistry';
 
 // Theme support
 
@@ -64,6 +59,7 @@ registerThemingParticipant((theme, collector) => {
 const CONTEXT_BANNER_FOCUSED = new RawContextKey<boolean>('bannerFocused', false, localize('bannerFocused', "Whether the banner has keyboard focus"));
 
 export class BannerPart extends Part implements IBannerService {
+
 	declare readonly _serviceBrand: undefined;
 
 	// #region IView
@@ -80,8 +76,7 @@ export class BannerPart extends Part implements IBannerService {
 		return this.visible ? this.height : 0;
 	}
 
-	private _onDidChangeSize = new Emitter<{ width: number; height: number; } | undefined>();
-
+	private _onDidChangeSize = this._register(new Emitter<{ width: number; height: number; } | undefined>());
 	override get onDidChange() { return this._onDidChangeSize.event; }
 
 	//#endregion
@@ -179,7 +174,7 @@ export class BannerPart extends Part implements IBannerService {
 			this.visible = visible;
 			this.focusedActionIndex = -1;
 
-			this.layoutService.setBannerHidden(!visible);
+			this.layoutService.setPartHidden(!visible, Parts.BANNER_PART);
 			this._onDidChangeSize.fire(undefined);
 		}
 	}
@@ -250,17 +245,14 @@ export class BannerPart extends Part implements IBannerService {
 			this.messageActionsContainer = append(this.element, $('div.message-actions-container'));
 
 			for (const action of item.actions) {
-				const actionLink = this._register(this.instantiationService.createInstance(Link, action, {}));
-				actionLink.el.tabIndex = -1;
-				actionLink.el.setAttribute('role', 'button');
-				this.messageActionsContainer.appendChild(actionLink.el);
+				this._register(this.instantiationService.createInstance(Link, this.messageActionsContainer, { ...action, tabIndex: -1 }, {}));
 			}
 		}
 
 		// Action
 		const actionBarContainer = append(this.element, $('div.action-container'));
 		this.actionBar = this._register(new ActionBar(actionBarContainer));
-		const closeAction = this._register(new Action('banner.close', 'Close Banner', bannerCloseIcon.classNames, true, () => this.close(item)));
+		const closeAction = this._register(new Action('banner.close', 'Close Banner', ThemeIcon.asClassName(widgetClose), true, () => this.close(item)));
 		this.actionBar.push(closeAction, { icon: true, label: false });
 		this.actionBar.setFocusable(false);
 

@@ -4,7 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as nls from 'vs/nls';
-import { IEditorInput, IRevertOptions, ISaveOptions } from 'vs/workbench/common/editor';
+import { IRevertOptions, ISaveOptions } from 'vs/workbench/common/editor';
+import { EditorInput } from 'vs/workbench/common/editor/editorInput';
 import { EditorModel } from 'vs/workbench/common/editor/editorModel';
 import { Emitter, Event } from 'vs/base/common/event';
 import { ICellDto2, INotebookEditorModel, INotebookLoadOptions, IResolvedNotebookEditorModel, NotebookCellsChangeType, NotebookData, NotebookDocumentBackupData } from 'vs/workbench/contrib/notebook/common/notebookCommon';
@@ -236,7 +237,7 @@ export class ComplexNotebookEditorModel extends EditorModel implements INotebook
 	private async getUntitledDocumentData(resource: URI): Promise<VSBuffer | undefined> {
 		// If it's an untitled file we must populate the untitledDocumentData
 		const untitledString = this.untitledTextEditorService.getValue(resource);
-		let untitledDocumentData = untitledString ? VSBuffer.fromString(untitledString) : undefined;
+		const untitledDocumentData = untitledString ? VSBuffer.fromString(untitledString) : undefined;
 		return untitledDocumentData;
 	}
 
@@ -392,7 +393,7 @@ export class ComplexNotebookEditorModel extends EditorModel implements INotebook
 		});
 	}
 
-	async saveAs(targetResource: URI): Promise<IEditorInput | undefined> {
+	async saveAs(targetResource: URI): Promise<EditorInput | undefined> {
 
 		if (!this.isResolved()) {
 			return undefined;
@@ -522,7 +523,7 @@ export class SimpleNotebookEditorModel extends EditorModel implements INotebookE
 					this._workingCopy = await this._workingCopyManager.resolve({ untitledResource: this.resource });
 				}
 			} else {
-				this._workingCopy = await this._workingCopyManager.resolve(this.resource, { forceReadFromFile: options?.forceReadFromFile });
+				this._workingCopy = await this._workingCopyManager.resolve(this.resource, options?.forceReadFromFile ? { reload: { async: false, force: true } } : undefined);
 				this._workingCopyListeners.add(this._workingCopy.onDidSave(() => this._onDidSave.fire()));
 				this._workingCopyListeners.add(this._workingCopy.onDidChangeOrphaned(() => this._onDidChangeOrphaned.fire()));
 				this._workingCopyListeners.add(this._workingCopy.onDidChangeReadonly(() => this._onDidChangeReadonly.fire()));
@@ -535,8 +536,10 @@ export class SimpleNotebookEditorModel extends EditorModel implements INotebookE
 			}));
 		} else {
 			await this._workingCopyManager.resolve(this.resource, {
-				forceReadFromFile: options?.forceReadFromFile,
-				reload: { async: !options?.forceReadFromFile }
+				reload: {
+					async: !options?.forceReadFromFile,
+					force: options?.forceReadFromFile
+				}
 			});
 		}
 
@@ -544,7 +547,7 @@ export class SimpleNotebookEditorModel extends EditorModel implements INotebookE
 		return this;
 	}
 
-	async saveAs(target: URI): Promise<IEditorInput | undefined> {
+	async saveAs(target: URI): Promise<EditorInput | undefined> {
 		const newWorkingCopy = await this._workingCopyManager.saveAs(this.resource, target);
 		if (!newWorkingCopy) {
 			return undefined;

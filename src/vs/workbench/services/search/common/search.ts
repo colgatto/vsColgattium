@@ -69,6 +69,7 @@ export interface IFolderQuery<U extends UriComponents = URI> {
 	fileEncoding?: string;
 	disregardIgnoreFiles?: boolean;
 	disregardGlobalIgnoreFiles?: boolean;
+	disregardParentIgnoreFiles?: boolean;
 	ignoreSymlinks?: boolean;
 }
 
@@ -364,6 +365,7 @@ export interface ISearchConfigurationProperties {
 	 */
 	useIgnoreFiles: boolean;
 	useGlobalIgnoreFiles: boolean;
+	useParentIgnoreFiles: boolean;
 	followSymlinks: boolean;
 	smartCase: boolean;
 	globalFindClipboard: boolean;
@@ -387,9 +389,6 @@ export interface ISearchConfigurationProperties {
 		experimental: {}
 	};
 	sortOrder: SearchSortOrder;
-	experimental: {
-		forceExtensionHostSearch: boolean;
-	}
 }
 
 export interface ISearchConfiguration extends IFilesConfiguration {
@@ -641,6 +640,14 @@ export class QueryGlobTester {
 		if (includeExpression) {
 			this._parsedIncludeExpression = glob.parse(includeExpression);
 		}
+	}
+
+	matchesExcludesSync(testPath: string, basename?: string, hasSibling?: (name: string) => boolean): boolean {
+		if (this._parsedExcludeExpression && this._parsedExcludeExpression(testPath, basename, hasSibling)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

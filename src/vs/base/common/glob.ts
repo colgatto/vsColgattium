@@ -27,8 +27,8 @@ export interface SiblingClause {
 	when: string;
 }
 
-const GLOBSTAR = '**';
-const GLOB_SPLIT = '/';
+export const GLOBSTAR = '**';
+export const GLOB_SPLIT = '/';
 const PATH_REGEX = '[/\\\\]';		// any slash or backslash
 const NO_PATH_REGEX = '[^/\\\\]';	// any non-slash and non-backslash
 const ALL_FORWARD_SLASHES = /\//g;
@@ -177,7 +177,7 @@ function parseRegExp(pattern: string): string {
 						inBrackets = true;
 						continue;
 
-					case '}':
+					case '}': {
 						const choices = splitGlobAware(braceVal, ',');
 
 						// Converts {foo,bar} => [foo|bar]
@@ -189,7 +189,7 @@ function parseRegExp(pattern: string): string {
 						braceVal = '';
 
 						break;
-
+					}
 					case ']':
 						regEx += ('[' + bracketVal + ']');
 

@@ -7,7 +7,7 @@ import * as assert from 'assert';
 import { Range } from 'vs/editor/common/core/range';
 import { ITextBuffer, ValidAnnotatedEditOperation } from 'vs/editor/common/model';
 import { USUAL_WORD_SEPARATORS } from 'vs/editor/common/model/wordHelper';
-import { IModeService } from 'vs/editor/common/services/modeService';
+import { ILanguageService } from 'vs/editor/common/services/language';
 import { FindReplaceState } from 'vs/editor/contrib/find/findState';
 import { IConfigurationService, IConfigurationValue } from 'vs/platform/configuration/common/configuration';
 import { TestConfigurationService } from 'vs/platform/configuration/test/common/testConfigurationService';
@@ -15,7 +15,7 @@ import { FindModel } from 'vs/workbench/contrib/notebook/browser/contrib/find/fi
 import { IActiveNotebookEditor } from 'vs/workbench/contrib/notebook/browser/notebookBrowser';
 import { ICellModelDecorations, ICellModelDeltaDecorations, NotebookViewModel } from 'vs/workbench/contrib/notebook/browser/viewModel/notebookViewModel';
 import { CellEditType, CellKind } from 'vs/workbench/contrib/notebook/common/notebookCommon';
-import { TestCell, withTestNotebook } from 'vs/workbench/contrib/notebook/test/testNotebookEditor';
+import { TestCell, withTestNotebook } from 'vs/workbench/contrib/notebook/test/browser/testNotebookEditor';
 
 suite('Notebook Find', () => {
 	const configurationValue: IConfigurationValue<any> = {
@@ -56,10 +56,15 @@ suite('Notebook Find', () => {
 			],
 			async (editor, viewModel, accessor) => {
 				accessor.stub(IConfigurationService, configurationService);
-				const state = new FindReplaceState();
+				const state = new FindReplaceState<boolean>();
 				const model = new FindModel(editor, state, accessor.get(IConfigurationService));
+
+				const found = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				state.change({ isRevealed: true }, true);
 				state.change({ searchString: '1' }, true);
+				await found;
 				assert.strictEqual(model.findMatches.length, 2);
 				assert.strictEqual(model.currentMatch, -1);
 				model.find(false);
@@ -71,11 +76,15 @@ suite('Notebook Find', () => {
 
 				assert.strictEqual(editor.textModel.length, 3);
 
+				const found2 = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				editor.textModel.applyEdits([{
 					editType: CellEditType.Replace, index: 3, count: 0, cells: [
-						new TestCell(viewModel.viewType, 3, '# next paragraph 1', 'markdown', CellKind.Code, [], accessor.get(IModeService)),
+						new TestCell(viewModel.viewType, 3, '# next paragraph 1', 'markdown', CellKind.Code, [], accessor.get(ILanguageService)),
 					]
 				}], true, undefined, () => undefined, undefined, true);
+				await found2;
 				assert.strictEqual(editor.textModel.length, 4);
 				assert.strictEqual(model.findMatches.length, 3);
 				assert.strictEqual(model.currentMatch, 0);
@@ -94,10 +103,14 @@ suite('Notebook Find', () => {
 			async (editor, viewModel, accessor) => {
 				setupEditorForTest(editor, viewModel);
 				accessor.stub(IConfigurationService, configurationService);
-				const state = new FindReplaceState();
+				const state = new FindReplaceState<boolean>();
 				const model = new FindModel(editor, state, accessor.get(IConfigurationService));
+				const found = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				state.change({ isRevealed: true }, true);
 				state.change({ searchString: '1' }, true);
+				await found;
 				// find matches is not necessarily find results
 				assert.strictEqual(model.findMatches.length, 4);
 				assert.strictEqual(model.currentMatch, -1);
@@ -108,9 +121,13 @@ suite('Notebook Find', () => {
 				model.find(false);
 				assert.strictEqual(model.currentMatch, 2);
 
+				const found2 = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				editor.textModel.applyEdits([{
 					editType: CellEditType.Replace, index: 2, count: 1, cells: []
 				}], true, undefined, () => undefined, undefined, true);
+				await found2;
 				assert.strictEqual(model.findMatches.length, 3);
 
 				assert.strictEqual(model.currentMatch, 2);
@@ -137,19 +154,27 @@ suite('Notebook Find', () => {
 			async (editor, viewModel, accessor) => {
 				setupEditorForTest(editor, viewModel);
 				accessor.stub(IConfigurationService, configurationService);
-				const state = new FindReplaceState();
+				const state = new FindReplaceState<boolean>();
 				const model = new FindModel(editor, state, accessor.get(IConfigurationService));
+				const found = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				state.change({ isRevealed: true }, true);
 				state.change({ searchString: '1' }, true);
+				await found;
 				// find matches is not necessarily find results
 				assert.strictEqual(model.findMatches.length, 4);
 				assert.strictEqual(model.currentMatch, -1);
 				model.find(true);
 				assert.strictEqual(model.currentMatch, 4);
 
+				const found2 = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				editor.textModel.applyEdits([{
 					editType: CellEditType.Replace, index: 2, count: 1, cells: []
 				}], true, undefined, () => undefined, undefined, true);
+				await found2;
 				assert.strictEqual(model.findMatches.length, 3);
 				assert.strictEqual(model.currentMatch, 3);
 				model.find(false);
@@ -173,10 +198,14 @@ suite('Notebook Find', () => {
 			async (editor, viewModel, accessor) => {
 				setupEditorForTest(editor, viewModel);
 				accessor.stub(IConfigurationService, configurationService);
-				const state = new FindReplaceState();
+				const state = new FindReplaceState<boolean>();
 				const model = new FindModel(editor, state, accessor.get(IConfigurationService));
+				const found = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				state.change({ isRevealed: true }, true);
 				state.change({ searchString: '1' }, true);
+				await found;
 				// find matches is not necessarily find results
 				assert.strictEqual(model.findMatches.length, 4);
 				assert.strictEqual(model.currentMatch, -1);
@@ -184,11 +213,15 @@ suite('Notebook Find', () => {
 				model.find(false);
 				model.find(false);
 				assert.strictEqual(model.currentMatch, 2);
+				const found2 = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				(viewModel.viewCells[1].textBuffer as ITextBuffer).applyEdits([
 					new ValidAnnotatedEditOperation(null, new Range(1, 1, 1, 14), '', false, false, false)
 				], false, true);
 				// cell content updates, recompute
 				model.research();
+				await found2;
 				assert.strictEqual(model.currentMatch, 1);
 			});
 	});
@@ -202,10 +235,14 @@ suite('Notebook Find', () => {
 			],
 			async (editor, viewModel, accessor) => {
 				accessor.stub(IConfigurationService, configurationService);
-				const state = new FindReplaceState();
+				const state = new FindReplaceState<boolean>();
 				const model = new FindModel(editor, state, accessor.get(IConfigurationService));
+				const found = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				state.change({ isRevealed: true }, true);
 				state.change({ searchString: '1' }, true);
+				await found;
 				assert.strictEqual(model.findMatches.length, 2);
 				assert.strictEqual(model.currentMatch, -1);
 				model.find(false);
@@ -217,7 +254,11 @@ suite('Notebook Find', () => {
 
 				assert.strictEqual(editor.textModel.length, 3);
 
+				const found2 = new Promise<boolean>(resolve => state.onFindReplaceStateChange(e => {
+					if (e.matchesCount) { resolve(true); }
+				}));
 				state.change({ searchString: '3' }, true);
+				await found2;
 				assert.strictEqual(model.currentMatch, -1);
 				assert.strictEqual(model.findMatches.length, 0);
 			});
