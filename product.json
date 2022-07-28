@@ -1,9 +1,9 @@
 {
 	"nameShort": "VSColgattium",
 	"nameLong": "VSColgattium",
-	"applicationName": "code-oss",
-	"dataFolderName": ".vscode-oss",
-	"win32MutexName": "vscodeoss",
+	"applicationName": "colgattium",
+	"dataFolderName": ".vscode",
+	"win32MutexName": "vscolgattium",
 	"licenseName": "MIT",
 	"licenseUrl": "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
 	"serverGreeting": [],

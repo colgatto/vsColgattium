@@ -89,7 +89,7 @@
 }
 
 .monaco-workbench .part.titlebar > .window-appicon:not(.codicon) {
-	background-image: url('../../../media/code-icon.svg');
+	background-image: url('../../../media/code-icon.png');
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: 16px;
@@ -102,7 +102,7 @@
 	width: 8px;
 	height: 8px;
 	z-index: 1; /* on top of home indicator */
-	background-image: url('../../../media/code-icon.svg');
+	background-image: url('../../../media/code-icon.png');
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: 8px;

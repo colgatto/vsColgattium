@@ -27,6 +27,7 @@ exports.dirs = [
 	'extensions/image-preview',
 	'extensions/ipynb',
 	'extensions/jake',
+	'extensions/pss',
 	'extensions/json-language-features',
 	'extensions/json-language-features/server',
 	'extensions/markdown-language-features',
